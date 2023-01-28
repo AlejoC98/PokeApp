@@ -1,13 +1,13 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from './../firebase.js'
+import session from "express-session";
+import { application } from "express";
 
 const AuthLogin = async (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
-            const user = userCredential.user;
             return userCredential.user;
-            console.log(userCredential.user);
         })
         .catch((error) => {
 
@@ -34,4 +34,4 @@ const getUserData = (user) => {
       });
 }
 
-export { AuthLogin, getUserData} 
+export { AuthLogin, getUserData}

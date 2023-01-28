@@ -2,36 +2,77 @@
 import express from 'express';
 const app = express();
 const port = 3000;
-import { AuthLogin, getUserData } from './context/AuthFirebase.js'
+import { AuthLogin, getUserData} from './context/AuthFirebase.js';
+import session from "express-session";
 
 // Static files
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-
-let LoginError = undefined;
-
 // Set Views
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
+app.use(session({
+    secret: "aEsfjZehIdPlcrhLCV1E5Znmbd9VU4Zx",
+    cookie: {
+        sameSite: "strict",
+    },
+    saveUninitialized: false,
+    resave: true
+}));
+
+var urlAuth = [
+    "/Dashboard"
+]
+
+// app.use((req, res) => {
+//     // if (req.session.authenticated == true)
+//     //     if (!(req.route.path in urlAuth))
+//     //         res.render('index');
+//     // else
+//     //     if (req.route.path in urlAuth)
+//     //         res.render("login");
+//     console.log("Sisa");
+// });
+
 // Views
 app.get("/", (req, res) => {
-    res.render('login', {error : LoginError});
+
+    if (req.session.authenticated == true) {
+        res.render('index');
+    } else {
+        res.render('login');
+    }
+
 });
 
-app.post('/Dashboard', (req, res) => {
-    // AuthLogin(req.body.username);
-    AuthLogin(req.body.username, req.body.password).then((result) => {
-        res.send("You're logged", {currentUser: `Email or Password doesn't match`});
-        console.log( Object.getOwnPropertyNames(result));
-        console.log(result.email);
+app.post("/authentication", (req, res) => {
+    const {username, password} = req.body;
+    console.log(username);
+    console.log(password);
+    AuthLogin(username, password).then((result) => {
+        req.session.authenticated = true;
+        req.session.user = {
+            username
+        }
+        res.redirect('/Dashboard');
     }).catch((err) => {
-        LoginError = `Email or Password doesn't match`;
-        res.redirect('/');
+        err.message = err.message.replace("auth/", "");
+        err.message = err.message.replace(/-/g, " ");
+        res.status(401).json({
+            message: err.message
+        });
     });
-    
+});
+
+app.get('/Dashboard', (req, res) => {
+    if (req.session.authenticated == true) {
+        res.render('index', {currentUser: req.session.user.username});
+    } else {
+        res.render('login');
+    }
 });
 
 // Listen to port

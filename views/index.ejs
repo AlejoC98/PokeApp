@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Pruebas </title>
+    <%- include('../components/headers') %>
+    <title>Dashboard</title>
 </head>
 <body>
-    <div class="container-fluid auth-container">
-        <div class="row">
-            <h1 class="text-white">Perrooo <%= currentUser %></h1>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <%- include('../components/sidebar') %>
+        </div>
+        <div class="main-container">
+            <%- include('../components/topbar', {user: currentUser}) %>
+            <div class="container-fluid d-content">
+                <div class="row">
+                    <div class="col d-block">
+                        <button class="btn btn-danger text-white"><i class="fa-solid fa-plus"></i> testing</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script defer src="/js/main.js"></script>
