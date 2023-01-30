@@ -1,4 +1,3 @@
-
 async function handleSubmit() {
     event.preventDefault();
 
@@ -8,6 +7,7 @@ async function handleSubmit() {
        json_params[element.name] = element.value;
     });
 
+    
     await fetch('/authentication', {
         method: 'POST',
         body: JSON.stringify(json_params),
@@ -26,5 +26,20 @@ async function handleSubmit() {
 
     }).catch((err) => {
         console.log(err);
+    });
+}
+
+if (myModalEl = document.getElementById('mainModal')) {
+    var newGameForm = ejs.compile("<%- include('../../components/form') %>");
+    myModalEl.addEventListener('show.bs.modal', event => {
+        switch (event.relatedTarget.id) {
+            case "createGame":
+                event.target.querySelector("#mainModalLabel").innerText = "New Game.";
+                // event.target.querySelector(".modal-body").innerHTML = newGameForm;
+                break;
+        
+            default:
+                break;
+        }
     });
 }
