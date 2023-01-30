@@ -5355,7 +5355,7 @@ textarea.form-control-lg {
   --bs-modal-padding: 1rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: ;
-  --bs-modal-bg: var(--bs-body-bg);
+  --bs-modal-bg: rgba(248, 248, 248, 0.3);
   --bs-modal-border-color: var(--bs-border-color-translucent);
   --bs-modal-border-width: var(--bs-border-width);
   --bs-modal-border-radius: var(--bs-border-radius-lg);
@@ -5365,12 +5365,12 @@ textarea.form-control-lg {
   --bs-modal-header-padding-y: 1rem;
   --bs-modal-header-padding: 1rem 1rem;
   --bs-modal-header-border-color: var(--bs-border-color);
-  --bs-modal-header-border-width: var(--bs-border-width);
+  --bs-modal-header-border-width: 0;
   --bs-modal-title-line-height: 1.5;
   --bs-modal-footer-gap: 0.5rem;
   --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
-  --bs-modal-footer-border-width: var(--bs-border-width);
+  --bs-modal-footer-border-width: 0;
   position: fixed;
   top: 0;
   left: 0;
@@ -5438,7 +5438,7 @@ textarea.form-control-lg {
 
 .modal-backdrop {
   --bs-backdrop-zindex: 1050;
-  --bs-backdrop-bg: #000;
+  --bs-backdrop-bg: transparent;
   --bs-backdrop-opacity: 0.5;
   position: fixed;
   top: 0;
@@ -6696,7 +6696,7 @@ textarea.form-control-lg {
   z-index: 1040;
   width: 100vw;
   height: 100vh;
-  background-color: #000;
+  background-color: transparent;
 }
 .offcanvas-backdrop.fade {
   opacity: 0;
@@ -11625,6 +11625,10 @@ body {
   justify-content: center;
 }
 
+.btn-warning {
+  color: #ffffff;
+}
+
 .auth-container {
   background: #084C61;
   display: flex;
@@ -11801,6 +11805,13 @@ body {
   background: #F8F8F8;
   border-radius: 5px;
   padding: 20px 25px;
+}
+
+.modal-content {
+  backdrop-filter: blur(10px);
+}
+.modal-content .modal-header {
+  justify-content: center;
 }
 
 /*# sourceMappingURL=style.css.map */

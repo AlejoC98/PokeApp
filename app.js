@@ -4,9 +4,19 @@ const app = express();
 const port = 3000;
 import { AuthLogin, getUserData} from './context/AuthFirebase.js';
 import session from "express-session";
+import path from "path";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 // Static files
 app.use(express.static('public'));
+
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/ejs')));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
