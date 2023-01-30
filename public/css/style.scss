@@ -117,46 +117,48 @@ body {
 
         li.active a::before {
             content: " ";
-            width: 10px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             display: flex;
             background: #ffffff;
             position: absolute;
-            top: -15px;
-            left: 80px;
+            top: -0.83em;
+            left: 3.3em;
         }
 
         li.active a::after {
             content: " ";
-            width: 10px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             display: flex;
+            // background: blue;
             background: #333333;
             position: absolute;
-            top: -15px;
-            left: 80px;
+            top: -0.83em;
+            left: 3.2em;
             border-radius: 0 0 10px 0;
         }
         
         li.active::before {
             content: " ";
-            width: 10px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             display: flex;
             background: #ffffff;
             position: relative;
             top: 51px;
-            left: 54px;
+            left: 2.5em
         }
         li.active::after {
             content: " ";
-            width: 10px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             display: flex;
+            // background:blue;
             background:#333333;
             position: relative;
             top: 51px;
-            left: 16.5px;
+            left: 0.40em;
             border-radius: 0 10px 0 0;
         }
     }

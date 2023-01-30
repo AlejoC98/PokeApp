@@ -25,17 +25,7 @@ app.use(session({
 
 var urlAuth = [
     "/Dashboard"
-]
-
-// app.use((req, res) => {
-//     // if (req.session.authenticated == true)
-//     //     if (!(req.route.path in urlAuth))
-//     //         res.render('index');
-//     // else
-//     //     if (req.route.path in urlAuth)
-//     //         res.render("login");
-//     console.log("Sisa");
-// });
+];
 
 // Views
 app.get("/", (req, res) => {
@@ -50,8 +40,6 @@ app.get("/", (req, res) => {
 
 app.post("/authentication", (req, res) => {
     const {username, password} = req.body;
-    console.log(username);
-    console.log(password);
     AuthLogin(username, password).then((result) => {
         req.session.authenticated = true;
         req.session.user = {
