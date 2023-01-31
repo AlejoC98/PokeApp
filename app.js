@@ -77,6 +77,13 @@ app.post("/forms", (req, res) => {
     res.render(form);
 });
 
+app.post("/modules", (req, res) => {
+    const module = "../components/modules/" + req.body.module;
+
+    res.render(module);
+
+});
+
 app.get('/Dashboard', (req, res) => {
     if (req.session.authenticated == true) {
         res.render('index', {currentUser: req.session.user.username});

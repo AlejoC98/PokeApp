@@ -1,29 +1,29 @@
-<form action="" method="POST" id="rulesForm">
+<form action="/" method="POST" onsubmit="handleSubmit()" id="rulesForm">
     <div class="row">
         <div class="col">
             <label for=""># Players</label>
-            <input type="text" class="form-control" placeholder="Players">
+            <input type="number" min="1" class="form-control" placeholder="Players" required>
         </div>
         <div class="col">
             <label for="">Rounds</label>
-            <input type="text" class="form-control" placeholder="1,2,3,4">
+            <input type="number" min="1" class="form-control" placeholder="1,2,3,4" required>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <label for="">Matches</label>
-            <input type="text" class="form-control" placeholder="1,2,3,4">
+            <input type="number" min="1" class="form-control" placeholder="1,2,3,4" required>
         </div>
         <div class="col">
             <label for="">Card Set</label>
-            <select name="" id="" class="form-select">
+            <select name="" id="" class="form-select" required>
                 <option value="">Select Set</option>
             </select>
         </div>
     </div>
 </form>
 
-<form action="" id="namesForm">
+<form action="" id="namesForm" class="d-none">
     <div class="row">
         <div class="col">
             <label for="">Names</label>

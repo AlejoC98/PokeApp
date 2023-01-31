@@ -3,7 +3,9 @@ $danger: #db3a34;
 $warning: #ffc857;
 $success: #177e89;
 $secondary: #323031;
-$modal-content-bg: rgba(248, 248, 248, 0.3);
+$modal-content-bg: rgba(51, 51, 51, 0.6);
+$modal-content-color: #ffffff;
+// $modal-content-bg: rgba(248, 248, 248, 0.3);
 $modal-content-border: 0;
 $modal-backdrop-bg: transparent;
 $modal-header-border-width: 0;
@@ -71,6 +73,11 @@ body {
 
 .dashboard-container {
     background: #ffffff;
+    background-image: url(../img/snorlax-bg.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 8em;
 }
 
 .dashboard-container {
@@ -99,31 +106,42 @@ body {
         flex-direction: column;
         height: 98%;
         border-radius: 10px;
+        min-width: 87px;
         li {
             display: flex;
             justify-content: center;
             width: 100%;
-            padding: 15px 10px;
-            font-size: 1.5em;
-            margin: 0 10px;
-
+            padding: 15px 0;
+            font-size: 1.5em;            
             a {
                 min-width: 27px;
+                text-align: center;
             }
 
-            img {
-                margin: 10px 0;
-                margin: 0 auto;
-            }
+            // img {
+                // position: relative;
+                // left: -6px;
+            // }
 
+        }
+
+        li:not(.active) {
+            cursor: pointer;
         }
 
         li.active {
             background: #ffffff;
             border-radius: 20px 0 0 20px;
             position: relative;
+            margin: 0 10px;
             a.text-white {
                 color: #333333 !important;
+                cursor:auto;
+
+                i {
+                    position: relative;
+                    left: -10px;
+                }
             }
         }
 
@@ -135,7 +153,7 @@ body {
             background: #ffffff;
             position: absolute;
             top: -0.80em;
-            left: 3.3em;
+            left: 4rem;
         }
 
         li.active a::after {
@@ -147,7 +165,7 @@ body {
             background: #333333;
             position: absolute;
             top: -0.82em;
-            left: 3.2em;
+            left: 2.4em;
             border-radius: 0 0 10px 0;
         }
         
@@ -159,7 +177,7 @@ body {
             background: #ffffff;
             position: relative;
             top: 2em;
-            left: 2.5em
+            left: 2.5em;
         }
         li.active::after {
             content: " ";
@@ -169,8 +187,8 @@ body {
             // background:blue;
             background:#333333;
             position: relative;
-            top: 2.11em;
-            left: 0.40em;
+            top: 2.13em;
+            left: 0;
             border-radius: 0 10px 0 0;
         }
     }
@@ -241,6 +259,21 @@ body {
     backdrop-filter: blur(10px);
 
     .modal-header {
-        justify-content: center;
+        h1 {
+            margin: 0 auto;
+            font-size: 2rem;
+        }
+
+        button {
+            margin: 0;
+            position: absolute;
+            right: 0.5em;
+            top: 1em;
+        }
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
     }
 }

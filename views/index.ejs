@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../components/headers') %>
+    <%- include('../components/global/headers') %>
     <title>Dashboard</title>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="sidebar">
-            <%- include('../components/sidebar') %>
+            <%- include('../components/global/sidebar') %>
         </div>
         <div class="main-container">
-            <%- include('../components/topbar', {user: currentUser}) %>
+            <%- include('../components/global/topbar', {user: currentUser}) %>
             <div class="container-fluid d-content">
                 <div class="row">
-                    <div class="col d-block">
-                        <button class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#mainModal" id="createGame"><i class="fa-solid fa-plus"></i> New Game</button>
-                    </div>
                 </div>
             </div>
         </div>
