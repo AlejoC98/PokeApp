@@ -6,7 +6,6 @@ import { AuthLogin } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
-import ejs from "ejs";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -78,11 +77,36 @@ app.post("/forms", (req, res) => {
 });
 
 app.post("/modules", (req, res) => {
-    const module = "../components/modules/" + req.body.module;
+
+    let module;
+
+    const opt = req.body.module;
+
+    switch (opt) {
+        case "home":
+            module = "../components/modules/newGameModule";
+            break;
+        case "sets":
+            module = "../components/modules/cardSetModule";
+            break;
+    }
 
     res.render(module);
 
 });
+
+// app.post("/pokeload", (req, res) => {
+
+//     const action = req.body.action;
+
+    
+
+//     if (response)
+//         res.status(200).json({
+//             content: response
+//         });
+
+// });
 
 app.get('/Dashboard', (req, res) => {
     if (req.session.authenticated == true) {

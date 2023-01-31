@@ -13,7 +13,7 @@ function openMenu() {
     document.querySelector(".d-content").innerHTML = "";
 
     var json_params = {
-        "module": ""
+        "module": this.id
     };
 
     if (document.querySelector("li.active")) {
@@ -21,15 +21,6 @@ function openMenu() {
     }
 
     this.classList.toggle("active");
-
-    switch (this.id) {
-        case "home":
-            json_params["module"] = "newGameModule";
-            break;
-        case "sets":
-            json_params["module"] = "cardSetModule";
-            break;
-    }
 
     fetch("/modules", {
         method: 'POST',
@@ -40,22 +31,39 @@ function openMenu() {
     }).then((resJson) => {
         return resJson.text();
     }).then((res) => {
-        document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
+
+        switch (this.id) {
+            case "home":
+                console.log("Perrito");
+                break;
+                case "sets":
+                document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
+                break;
+        }
+
     }).catch((err) => {
         console.log(err);
     });
 
 }
 
-function loadCards() {
-    fetch("https://api.pokemontcg.io/v2/cards?q=name:gardevoir", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then((res) => {
-        console.log(res);
-    }).catch((err) => {
-        console.log(err);
-    })
-}
+// function loadCards(action) {
+
+//     var json_params = {
+//         "action": action
+//     };
+
+//     fetch("/pokeload", {
+//         method: "POST",
+//         body: JSON.stringify(json_params),
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     }).then((resJson) => {
+//         return resJson.json();
+//     }).then((res) => {
+//         console.log(res);
+//     }).catch((err) => {
+//         console.log(err);
+//     })
+// }
