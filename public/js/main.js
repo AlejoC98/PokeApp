@@ -30,16 +30,31 @@ async function handleSubmit() {
 }
 
 if (myModalEl = document.getElementById('mainModal')) {
-    var newGameForm = ejs.compile("<%- include('../../components/form') %>");
     myModalEl.addEventListener('show.bs.modal', event => {
-        switch (event.relatedTarget.id) {
-            case "createGame":
-                event.target.querySelector("#mainModalLabel").innerText = "New Game.";
-                // event.target.querySelector(".modal-body").innerHTML = newGameForm;
-                break;
-        
-            default:
-                break;
-        }
+        var json_params = {
+            "action" : event.relatedTarget.id
+        };
+        fetch("/forms", {
+            method: 'POST',
+            body: JSON.stringify(json_params),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((res) => {
+            // return res.json();
+            return res.text();
+        }).then((resJson) => {
+            // action
+            switch (json_params.action) {
+                case "createGame":
+                    event.target.querySelector("#mainModalLabel").innerText = "New Game.";
+                    event.target.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", resJson);
+                    event.target.querySelector("#exampleModalToggleLabel2").innerText = "New Game.";
+                    document.querySelector("#mainModal2 .modal-body").appendChild(document.querySelector("#namesForm"));
+                    break;
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     });
 }

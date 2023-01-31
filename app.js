@@ -2,10 +2,11 @@
 import express from 'express';
 const app = express();
 const port = 3000;
-import { AuthLogin, getUserData} from './context/AuthFirebase.js';
+import { AuthLogin } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
+import ejs from "ejs";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -15,7 +16,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.static('public'));
 
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
-app.use('/js', express.static(path.join(__dirname, 'node_modules/ejs')));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -63,6 +63,18 @@ app.post("/authentication", (req, res) => {
             message: err.message
         });
     });
+});
+
+app.post("/forms", (req, res) => {
+    const data = req.body;
+    var form;
+    switch (data.action) {
+        case "createGame":
+            form = "../components/newGameForm";
+            break;
+    }
+
+    res.render(form);
 });
 
 app.get('/Dashboard', (req, res) => {
