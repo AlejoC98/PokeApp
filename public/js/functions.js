@@ -42,7 +42,7 @@ async function loadModule(json_params = {}) {
 
         switch (json_params.module) {
             case "home":
-                console.log("Perrito");
+                document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
                 break;
             case "sets":
                 document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
@@ -103,4 +103,66 @@ function createCardElement(data) {
         document.querySelector(".set-cards-content .row").insertAdjacentHTML("beforeend", insert);
     });
     
+}
+
+function loadForm(json_params, element) {
+    fetch("/forms", {
+        method: 'POST',
+        body: JSON.stringify(json_params),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((res) => {
+        // return res.json();
+        return res.text();
+    }).then((resJson) => {
+        // action
+        switch (json_params.action) {
+            case "createGame":
+                element.querySelector("#mainModalLabel").innerText = "New Game.";
+                element.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", resJson);
+                updateSelectOpt("#pokeSets", "sets")
+                break;
+        }
+
+        var formID = element.querySelector("#mainModal .modal-body form").id;
+
+        element.querySelector("#mainModal #confirmModal").setAttribute("form", formID);
+
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+async function updateSelectOpt(select, data) {
+    
+    var json_params = {};
+
+    switch (data) {
+        case "sets":
+            json_params["action"] = "sets";
+            break;
+    }
+
+    await fetch("/pokeload", {
+        method: "POST",
+        body: JSON.stringify(json_params),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((resJson) => {
+        return resJson.json();
+    }).then((res) => {
+        if ("content" in res) {
+            for (opt of res.content) {
+                var option_ele = document.createElement("option");
+                option_ele.id = opt.id;
+                option_ele.value = opt.id;
+                option_ele.innerText = opt.name;
+                document.querySelector(select).appendChild(option_ele);
+            }
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
 }

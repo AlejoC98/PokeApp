@@ -48,31 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var json_params = {
                 "action" : event.relatedTarget.id
             };
-            fetch("/forms", {
-                method: 'POST',
-                body: JSON.stringify(json_params),
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then((res) => {
-                // return res.json();
-                return res.text();
-            }).then((resJson) => {
-                // action
-                switch (json_params.action) {
-                    case "createGame":
-                        event.target.querySelector("#mainModalLabel").innerText = "New Game.";
-                        event.target.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", resJson);
-                        break;
-                }
-    
-                var formID = event.target.querySelector("#mainModal .modal-body form").id;
-    
-                event.target.querySelector("#mainModal #confirmModal").setAttribute("form", formID);
-    
-            }).catch((err) => {
-                console.log(err);
-            });
+            loadForm(json_params, event.target);
         });
     }
     // Add event for menu items
@@ -85,8 +61,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     document.addEventListener("scroll", (pos) => {
         if (document.querySelectorAll(".breadcrumb").length > 0)
-            if (!(document.querySelector(".breadcrumb").classList.contains("fixed-top")))
-                if (window.scrollY >= 80)
-                    document.querySelector(".breadcrumb").classList.add("fixed-top");
+                if (window.scrollY >= 80){
+                    if (!(document.querySelector(".breadcrumb").classList.contains("fixed-top"))) {
+                        document.querySelector(".breadcrumb").classList.add("fixed-top");
+                    }
+                } else {
+                    document.querySelector(".breadcrumb").classList.remove("fixed-top");
+                }
     });
 });

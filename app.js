@@ -117,8 +117,19 @@ app.post("/pokeload", async (req, res) => {
             break;
         case "sets":
             await pokemon.set.all().then((cards) => {
-                // console.log(cards) // "Base"
-                response = cards
+                response = [];
+                var content = [];
+                cards.find((set) => {
+                    content.push(set.name);
+                });
+
+                content = content.sort();
+
+                for (var card of content) {
+                    console.log(card);
+                    var insert = cards.find((setN) => setN.name === card);
+                    response.push(insert);
+                }
             })
             break;
         case "setCards":
