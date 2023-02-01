@@ -81,4 +81,12 @@ document.addEventListener("DOMContentLoaded", function() {
             ele.addEventListener("click", openMenu);
         });
     }
+
+    
+    document.addEventListener("scroll", (pos) => {
+        if (document.querySelectorAll(".breadcrumb").length > 0)
+            if (!(document.querySelector(".breadcrumb").classList.contains("fixed-top")))
+                if (window.scrollY >= 80)
+                    document.querySelector(".breadcrumb").classList.add("fixed-top");
+    });
 });

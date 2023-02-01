@@ -6,6 +6,9 @@ import { AuthLogin } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
+import pokemon from 'pokemontcgsdk';
+
+pokemon.configure({apiKey: '11800482-77f0-4124-b53f-7f12ac6d690c'});
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -78,7 +81,7 @@ app.post("/forms", (req, res) => {
 
 app.post("/modules", (req, res) => {
 
-    let module;
+    let module = "";
 
     const opt = req.body.module;
 
@@ -89,31 +92,55 @@ app.post("/modules", (req, res) => {
         case "sets":
             module = "../components/modules/cardSetModule";
             break;
+            case "cardsSet":
+            module = "../components/modules/setCardsModule";
+            break;
     }
 
-    res.render(module);
+    if (module != "")
+        res.render(module);
 
 });
 
-// app.post("/pokeload", (req, res) => {
+app.post("/pokeload", async (req, res) => {
 
-//     const action = req.body.action;
+    const action = req.body.action;
 
-    
+    let response;
 
-//     if (response)
-//         res.status(200).json({
-//             content: response
-//         });
+    switch (action) {
+        case "all":
+            await pokemon.card.where({ pageSize: 250, page: 1 }).then(result => {
+                console.log(result.data[0].name) // "Blastoise"
+                response = result;
+            })
+            break;
+        case "sets":
+            await pokemon.set.all().then((cards) => {
+                // console.log(cards) // "Base"
+                response = cards
+            })
+            break;
+        case "setCards":
+            let filter = req.body.filter;
+            await pokemon.card.all({ q: 'set.id:' + filter }).then(result => {
+                response = result;
+            })
+            break;
+    }
 
-// });
+    res.status(200).json({
+        content: response
+    });
+});
 
 app.get('/Dashboard', (req, res) => {
-    if (req.session.authenticated == true) {
-        res.render('index', {currentUser: req.session.user.username});
-    } else {
-        res.render('login');
-    }
+    res.render('index', {currentUser: "Parce"});
+    // if (req.session.authenticated == true) {
+    //     res.render('index', {currentUser: req.session.user.username});
+    // } else {
+    //     res.render('login');
+    // }
 });
 
 // Listen to port
