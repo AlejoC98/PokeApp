@@ -1,3 +1,18 @@
+
+axios.interceptors.request.use(config => {
+    document.querySelector(".loading-container").style.display = "flex";
+    return config;
+}, (err) => {
+    document.querySelector(".loading-container").style.display = "none";
+});
+
+axios.interceptors.response.use(response => {
+    document.querySelector(".loading-container").style.display = "none";
+    return response;
+}, (err) => {
+    document.querySelector(".loading-container").style.display = "none";
+});
+
 async function handleSubmit() {
     event.preventDefault();
 
@@ -19,24 +34,17 @@ async function handleSubmit() {
     }
 
     
-    await fetch(json_url, {
-        method: 'POST',
-        body: JSON.stringify(json_params),
-        redirect: "follow",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then((res) => {
-        var jres;
-        (res.redirected == true) ? window.location = res.url : jres = res.json();
-        return jres;
-    }).then((jsonRes) => {
-        
-        if ('message' in jsonRes)
-            createErrorMg(".login-error", jsonRes.message);
-
+    await axios.post(json_url, json_params).then((res) => {
+        res = res.data;
+        if (res != false)
+            window.location = res;
     }).catch((err) => {
-        console.log(err);
+        if ("response" in err)
+            var mg = err.response.data.message;
+        else
+            var mg = "Error Procecing your Request";
+
+        createErrorMg(".login-error", mg);
     });
 }
 

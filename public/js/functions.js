@@ -1,3 +1,4 @@
+
 function createErrorMg(ele, mg, time = 3000) {
     var element = document.querySelector(ele);
     element.innerText = mg;
@@ -30,16 +31,8 @@ async function loadModule(json_params = {}) {
 
     let eleID = event.currentTarget.id;
 
-    await fetch("/modules", {
-        method: 'POST',
-        body: JSON.stringify(json_params),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then((resJson) => {
-        return resJson.text();
-    }).then((res) => {
-
+    await axios.post("/modules", json_params).then((res) => {
+        res = res.data;
         switch (json_params.module) {
             case "home":
                 document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
@@ -54,7 +47,6 @@ async function loadModule(json_params = {}) {
                 loadCards({ "action" : "setCards", "filter" : eleID }, "createCardElement");
                 break;
         }
-
     }).catch((err) => {
         console.log(err);
     });
@@ -62,20 +54,13 @@ async function loadModule(json_params = {}) {
 
 async function loadCards(json_params, func) {
 
-    await fetch("/pokeload", {
-        method: "POST",
-        body: JSON.stringify(json_params),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then((resJson) => {
-        return resJson.json();
-    }).then((res) => {
+    await axios.post("/pokeload", json_params).then((res) => {
+        res = res.data;
         if ("content" in res)
             window[func].apply(this, [res.content]);
     }).catch((err) => {
         console.log(err);
-    })
+    });
 }
 
 function createSetTable(data) {
@@ -106,29 +91,20 @@ function createCardElement(data) {
 }
 
 function loadForm(json_params, element) {
-    fetch("/forms", {
-        method: 'POST',
-        body: JSON.stringify(json_params),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then((res) => {
-        // return res.json();
-        return res.text();
-    }).then((resJson) => {
-        // action
+    axios.post("/forms", json_params).then((res) => {
+        res = res.data;
+
         switch (json_params.action) {
             case "createGame":
                 element.querySelector("#mainModalLabel").innerText = "New Game.";
-                element.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", resJson);
+                element.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", res);
                 updateSelectOpt("#pokeSets", "sets")
                 break;
         }
-
+    
         var formID = element.querySelector("#mainModal .modal-body form").id;
-
+    
         element.querySelector("#mainModal #confirmModal").setAttribute("form", formID);
-
     }).catch((err) => {
         console.log(err);
     });
@@ -136,23 +112,18 @@ function loadForm(json_params, element) {
 
 async function updateSelectOpt(select, data) {
     
-    var json_params = {};
+    var json_params;
 
     switch (data) {
         case "sets":
-            json_params["action"] = "sets";
+            json_params = "sets";
             break;
     }
 
-    await fetch("/pokeload", {
-        method: "POST",
-        body: JSON.stringify(json_params),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then((resJson) => {
-        return resJson.json();
+    axios.post("/pokeload", {
+        "action" : json_params
     }).then((res) => {
+        res = res.data;
         if ("content" in res) {
             for (opt of res.content) {
                 var option_ele = document.createElement("option");
@@ -165,4 +136,14 @@ async function updateSelectOpt(select, data) {
     }).catch((err) => {
         console.log(err);
     });
+}
+
+function validatePlayerMatches() {
+    let nPlayers = document.getElementById("playerNumber"),
+    gameMatches = document.getElementById("gameMatches");
+
+    if (nPlayers.value != "" && gameMatches.value != "") {
+        
+    }
+
 }

@@ -7,6 +7,7 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
 import pokemon from 'pokemontcgsdk';
+import { callbackify } from 'util';
 
 pokemon.configure({apiKey: '11800482-77f0-4124-b53f-7f12ac6d690c'});
 
@@ -18,6 +19,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static('public'));
 
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/axios/dist')));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -57,13 +59,13 @@ app.post("/authentication", (req, res) => {
         req.session.user = {
             username
         }
-        res.redirect('/Dashboard');
+        res.send('/Dashboard');
     }).catch((err) => {
         err.message = err.message.replace("auth/", "");
         err.message = err.message.replace(/-/g, " ");
-        res.status(401).json({
-            message: err.message
-        });
+
+        res.status(401);
+
     });
 });
 

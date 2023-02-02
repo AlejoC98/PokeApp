@@ -2,17 +2,17 @@
     <div class="row">
         <div class="col">
             <label for=""># Players</label>
-            <input type="number" min="1" class="form-control" placeholder="Players" required>
+            <input type="number" id="playerNumber" min="1" class="form-control" placeholder="Players" required>
         </div>
         <div class="col">
             <label for="">Rounds</label>
-            <input type="number" min="1" class="form-control" placeholder="1,2,3,4" required>
+            <input type="number" id="gameRounds" min="1" class="form-control" placeholder="1,2,3,4" required>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <label for="">Matches</label>
-            <input type="number" min="1" class="form-control" placeholder="1,2,3,4" required>
+            <input type="number" id="gameMatches" min="1" class="form-control" placeholder="1,2,3,4" onkeyup="validatePlayerMatches()" required>
         </div>
         <div class="col">
             <label for="">Card Set</label>
