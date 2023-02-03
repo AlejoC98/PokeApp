@@ -63,9 +63,9 @@ app.post("/authentication", (req, res) => {
     }).catch((err) => {
         err.message = err.message.replace("auth/", "");
         err.message = err.message.replace(/-/g, " ");
-
-        res.status(401);
-
+        // Sending Error
+        console.log("Por aqui paso");
+        res.status(401).json(err);
     });
 });
 
@@ -128,7 +128,6 @@ app.post("/pokeload", async (req, res) => {
                 content = content.sort();
 
                 for (var card of content) {
-                    console.log(card);
                     var insert = cards.find((setN) => setN.name === card);
                     response.push(insert);
                 }

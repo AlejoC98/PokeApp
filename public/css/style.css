@@ -11832,6 +11832,9 @@ body {
 .modal-content {
   -webkit-backdrop-filter: blur(10px);
 }
+.modal-content .modal-body .row {
+  margin: 20px auto;
+}
 .modal-content .modal-header h1, .modal-content .modal-header .h1 {
   margin: 0 auto;
   font-size: 2rem;
@@ -11896,6 +11899,20 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 100000;
+}
+
+input.num::-webkit-outer-spin-button,
+input.num::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input.num {
+  -moz-appearance: textfield;
+}
+
+#playersInputs .col-12 {
+  margin: 10px auto;
 }
 
 /*# sourceMappingURL=style.css.map */

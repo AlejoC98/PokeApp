@@ -1,9 +1,20 @@
-
 function createErrorMg(ele, mg, time = 3000) {
-    var element = document.querySelector(ele);
-    element.innerText = mg;
+
+    // var element = document.querySelector(ele);
+    
+    var element = (typeof ele === "string") ? document.querySelector(ele) : ele;
+
+    if (element.childNodes.length > 0) {
+        element.insertAdjacentHTML("beforeend", "<span class='text-danger text-small'>" + mg + "</span>")
+        element = element.querySelector("span");
+    }
+    else {
+        element.innerText = mg;
+    }
+
+
     setTimeout(() => {
-        element.innerText = "";
+        (element.tagName === "SPAN") ? element.remove() : element.innerText = "";
     }, time);
 }
 
@@ -98,13 +109,16 @@ function loadForm(json_params, element) {
             case "createGame":
                 element.querySelector("#mainModalLabel").innerText = "New Game.";
                 element.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", res);
-                updateSelectOpt("#pokeSets", "sets")
+                updateSelectOpt("#pokeSets", "sets");
                 break;
         }
     
         var formID = element.querySelector("#mainModal .modal-body form").id;
     
         element.querySelector("#mainModal #confirmModal").setAttribute("form", formID);
+
+        // document.querySelectorAll()
+
     }).catch((err) => {
         console.log(err);
     });
@@ -138,12 +152,87 @@ async function updateSelectOpt(select, data) {
     });
 }
 
-function validatePlayerMatches() {
-    let nPlayers = document.getElementById("playerNumber"),
-    gameMatches = document.getElementById("gameMatches");
+function validatePlayers() {
 
-    if (nPlayers.value != "" && gameMatches.value != "") {
-        
+    var parent = document.querySelector('#playersInputs .cont');
+
+    parent.innerHTML = "";
+
+    if (event.target.value != "") {
+        for (let index = 0; index < event.target.value; index++) {
+            var currentID = (index + 1);
+            var insertIn = "<div class='col-12'> <label>Palyer "+ currentID +"</label> <input class='form-control' type='text' name='player"+currentID+"' id='player"+currentID+"' required  placeholder='Name'/> </div>";
+            parent.insertAdjacentHTML('beforeend', insertIn);
+        }
+        showHiddenElements(".modal-body form");
     }
+}
+
+function showHiddenElements(container) {
+    document.querySelectorAll(container + " .d-none").forEach((ele) => {
+        ele.classList.toggle("d-none");
+    });
+}
+
+function validatePlayerMatches() {
+
+    inputMask('number');
+
+    if (event.key != "Backspace" && event.target.value != "") {
+        let nPlayers = document.getElementById("playerNumber").value,
+        gameM = document.getElementById("gameMatches").value;
+    
+        if (nPlayers != "" && gameM != "") {
+            var evenly = nPlayers / gameM;
+            if (evenly % 1 === 0){
+                // Removing tooltip
+                new bootstrap.Tooltip("#confirmModal", {disabled: true});
+                document.getElementById("confirmModal").setAttribute("type", "submit");
+                event.target.classList.toggle("is-invalid");
+            } else {
+                // Adding tooltip
+                new bootstrap.Tooltip("#confirmModal", {
+                    title: "Number of matches not evenly with players!",
+                });
+                document.getElementById("confirmModal").setAttribute("type", "button");
+
+                event.target.classList.toggle("is-invalid");
+
+            }
+        }
+    }
+}
+
+// function addPlayerName() {
+    
+// }
+
+
+
+function inputMask(type) {
+    var status = true;
+    if (event.key != "Backspace" && event.key != "Tab")
+        switch (type) {
+            case "number":
+                if (/^[A-Za-z]*$/.test(event.key) == true)
+                    status = false;
+
+                if ("max" in event.target) {
+                    if ( parseInt(event.target.value + event.key) > parseInt(event.target.max) ){
+                        status = false;
+                        createErrorMg(event.target.parentElement, "Number can't be higher than " + event.target.max);
+                    }
+                }
+
+                break;
+            case "letters":
+                // if (/\d/.test(event.key) == true)
+                if (/^[0-9]*$/.test(event.key) == true)
+                    status = false;
+                break;
+        }
+
+    if (status == false)
+        event.preventDefault();
 
 }

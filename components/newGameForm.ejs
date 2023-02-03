@@ -1,18 +1,18 @@
-<form action="/" method="POST" onsubmit="handleSubmit()" id="rulesForm">
+<form action="/" method="POST" onsubmit="handleSubmit()" id="gameRulesForm">
     <div class="row">
         <div class="col">
             <label for=""># Players</label>
-            <input type="number" id="playerNumber" min="1" class="form-control" placeholder="Players" required>
+            <input type="number" id="playerNumber" name="playerNumber" min="1" max="10" class="form-control" placeholder="Players" onkeydown="inputMask('number')" onchange="validatePlayers()" required>
         </div>
         <div class="col">
             <label for="">Rounds</label>
-            <input type="number" id="gameRounds" min="1" class="form-control" placeholder="1,2,3,4" required>
+            <input type="number" id="gameRounds" name="gameRounds" min="1" class="form-control" placeholder="1,2,3,4" onkeydown="inputMask('number')" required>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <label for="">Matches</label>
-            <input type="number" id="gameMatches" min="1" class="form-control" placeholder="1,2,3,4" onkeyup="validatePlayerMatches()" required>
+            <input type="number" id="gameMatches" name="gameMatches" min="1" class="form-control" placeholder="1,2,3,4" onkeyup="validatePlayerMatches()" required>
         </div>
         <div class="col">
             <label for="">Card Set</label>
@@ -21,13 +21,19 @@
             </select>
         </div>
     </div>
-</form>
-
-<form action="" id="namesForm" class="d-none">
     <div class="row">
         <div class="col">
-            <label for="">Names</label>
-            <input type="text" class="form-control" placeholder="Players Names">
+            <label for="">Level</label>
+            <select name="gameLevel" id="gameLevel" class="form-select" required>
+                <option value="">Select Level</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
         </div>
+    </div>
+    <div class="row d-none" id="playersInputs">
+        <h3>Players</h3>
+        <div class="cont"></div>
     </div>
 </form>

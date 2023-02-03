@@ -1,4 +1,3 @@
-
 axios.interceptors.request.use(config => {
     document.querySelector(".loading-container").style.display = "flex";
     return config;
@@ -13,14 +12,19 @@ axios.interceptors.response.use(response => {
     document.querySelector(".loading-container").style.display = "none";
 });
 
-async function handleSubmit() {
+// Initializing bt element
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+function handleSubmit() {
     event.preventDefault();
 
     var json_params = {};
     var json_url;
 
-    event.target.querySelectorAll("input, textarea").forEach(element => {
-       json_params[element.name] = element.value;
+    event.target.querySelectorAll("input, textarea, select").forEach(element => {
+        if (element.value != "")
+            json_params[element.name] = element.value;
     });
 
     // Switch depending on the form action
@@ -28,24 +32,19 @@ async function handleSubmit() {
         case "loginForm":
             json_url = "/authentication"
             break;
-        case "rulesForm":
-            console.log("Perrito");
+        case "gameRulesForm":
+            console.log("Perro");
             break;
     }
-
-    
-    await axios.post(json_url, json_params).then((res) => {
-        res = res.data;
-        if (res != false)
-            window.location = res;
-    }).catch((err) => {
-        if ("response" in err)
-            var mg = err.response.data.message;
-        else
-            var mg = "Error Procecing your Request";
-
-        createErrorMg(".login-error", mg);
-    });
+    // checking if there's parameters inside json_params
+    if (Object.keys(json_params).length > 0)
+        axios.post(json_url, json_params).then((res) => {
+            res = res.data;
+            if (res != false)
+                window.location = res;
+        }).catch((err) => {
+            createErrorMg(".login-error", err.response.data.message);
+        });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
