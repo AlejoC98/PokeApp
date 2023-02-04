@@ -109,7 +109,7 @@ function loadForm(json_params, element) {
             case "createGame":
                 element.querySelector("#mainModalLabel").innerText = "New Game.";
                 element.querySelector("#mainModal .modal-body").insertAdjacentHTML("beforeend", res);
-                updateSelectOpt("#pokeSets", "sets");
+                updateSelectOpt("select#filter", "sets");
                 break;
         }
     
@@ -188,7 +188,7 @@ function validatePlayerMatches() {
                 // Removing tooltip
                 new bootstrap.Tooltip("#confirmModal", {disabled: true});
                 document.getElementById("confirmModal").setAttribute("type", "submit");
-                event.target.classList.toggle("is-invalid");
+                event.target.classList.remove("is-invalid");
             } else {
                 // Adding tooltip
                 new bootstrap.Tooltip("#confirmModal", {
@@ -196,7 +196,7 @@ function validatePlayerMatches() {
                 });
                 document.getElementById("confirmModal").setAttribute("type", "button");
 
-                event.target.classList.toggle("is-invalid");
+                event.target.classList.add("is-invalid");
 
             }
         }
@@ -227,7 +227,7 @@ function inputMask(type) {
                 break;
             case "letters":
                 // if (/\d/.test(event.key) == true)
-                if (/^[0-9]*$/.test(event.key) == true)
+                if (/\d/.test(event.key) == true)
                     status = false;
                 break;
         }
@@ -235,4 +235,12 @@ function inputMask(type) {
     if (status == false)
         event.preventDefault();
 
+}
+
+function flipCard() {
+
+    if (event.currentTarget.querySelector(".flip-card-inner").style.transform == "rotateY(180deg)")
+        event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(0deg)";
+    else
+        event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(180deg)";
 }

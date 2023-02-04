@@ -30,10 +30,28 @@ function handleSubmit() {
     // Switch depending on the form action
     switch (event.target.id) {
         case "loginForm":
-            json_url = "/authentication"
+            json_url = "/authentication";
             break;
         case "gameRulesForm":
-            console.log("Perro");
+            json_url = "/NewGame";
+
+            var new_json = {};
+
+            var players = {};
+
+            for(key of Object.keys(json_params)) {
+                if ( /\d/.test(key) == true )
+                    // players.push(json_params[key])
+                    players[key] = json_params[key];
+                else
+                    new_json[key] = json_params[key];
+            }
+
+            json_params = {
+                ...new_json,
+                "players" : players
+            }
+
             break;
     }
     // checking if there's parameters inside json_params

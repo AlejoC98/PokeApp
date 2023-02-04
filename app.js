@@ -6,10 +6,7 @@ import { AuthLogin } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
-import pokemon from 'pokemontcgsdk';
-import { callbackify } from 'util';
-
-pokemon.configure({apiKey: '11800482-77f0-4124-b53f-7f12ac6d690c'});
+import { getPokeCards } from './context/AuthPoke.js';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -52,20 +49,20 @@ app.get("/", (req, res) => {
 
 });
 
-app.post("/authentication", (req, res) => {
+app.post("/authentication", (req, res, next) => {
     const {username, password} = req.body;
+
+    let response = {};
+
     AuthLogin(username, password).then((result) => {
         req.session.authenticated = true;
         req.session.user = {
             username
         }
         res.send('/Dashboard');
+        response["url"] = '/Dashboard';
     }).catch((err) => {
-        err.message = err.message.replace("auth/", "");
-        err.message = err.message.replace(/-/g, " ");
-        // Sending Error
-        console.log("Por aqui paso");
-        res.status(401).json(err);
+        throw err;
     });
 });
 
@@ -106,40 +103,8 @@ app.post("/modules", (req, res) => {
 
 app.post("/pokeload", async (req, res) => {
 
-    const action = req.body.action;
 
-    let response;
-
-    switch (action) {
-        case "all":
-            await pokemon.card.where({ pageSize: 250, page: 1 }).then(result => {
-                console.log(result.data[0].name) // "Blastoise"
-                response = result;
-            })
-            break;
-        case "sets":
-            await pokemon.set.all().then((cards) => {
-                response = [];
-                var content = [];
-                cards.find((set) => {
-                    content.push(set.name);
-                });
-
-                content = content.sort();
-
-                for (var card of content) {
-                    var insert = cards.find((setN) => setN.name === card);
-                    response.push(insert);
-                }
-            })
-            break;
-        case "setCards":
-            let filter = req.body.filter;
-            await pokemon.card.all({ q: 'set.id:' + filter }).then(result => {
-                response = result;
-            })
-            break;
-    }
+    var response = await getPokeCards(req);
 
     res.status(200).json({
         content: response
@@ -153,6 +118,29 @@ app.get('/Dashboard', (req, res) => {
     // } else {
     //     res.render('login');
     // }
+});
+
+app.post('/NewGame', async (req, res) => {
+
+    req.body["action"] = "setCards";
+    var cards = [];
+    var response;
+    await getPokeCards(req).then((result) => {
+        // getting randon cards from set depending on game level
+        for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
+            cards.push(result[Math.floor(Math.random()*result.length)]);
+        }
+
+        // Getting randon card to create matches
+        for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
+            const element = cards[Math.floor(Math.random()*cards.length)];
+            response = cards.concat([element]);
+        }
+
+
+    }).catch((err) => {
+        console.log(err);
+    });
 });
 
 // Listen to port
