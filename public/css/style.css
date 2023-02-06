@@ -11617,7 +11617,7 @@ body {
   scroll-behavior: smooth;
 }
 
-.auth-container .login-container button {
+.auth-container .login-row .login-container button {
   background: #db3a34;
   border: #db3a34;
   color: #ffffff;
@@ -11630,6 +11630,10 @@ body {
   color: #ffffff;
 }
 
+main {
+  position: relative;
+}
+
 .auth-container {
   background: #084C61;
   background-image: url(../img/bg-pokeapp.png);
@@ -11639,21 +11643,29 @@ body {
   height: 100vh;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
-.auth-container .login-container {
+.auth-container .logo-col {
+  margin-top: 50px;
+}
+.auth-container .login-row {
+  margin-top: 100px;
+}
+.auth-container .login-row .login-container {
   min-width: 500px;
   padding: 15px;
-  background: RGBA(255, 200, 87, 0.6);
+  background: #ffc857;
   border-radius: 10px;
   -webkit-backdrop-filter: blur(10px);
 }
-.auth-container .login-container .row {
+.auth-container .login-row .login-container .row {
   margin-bottom: 15px;
 }
-.auth-container .login-container label {
+.auth-container .login-row .login-container label {
   margin-bottom: 10px;
+  font-size: 1.2em;
 }
-.auth-container .login-container button {
+.auth-container .login-row .login-container button {
   font-weight: bold;
   width: 100%;
   font-size: 1.3em;
@@ -11916,7 +11928,9 @@ input.num {
 }
 
 .field {
-  background-color: red;
+  background-image: url(../img/battle-field.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .pokecard.flip-card {
@@ -11950,6 +11964,13 @@ input.num {
 /* Style the back side */
 .flip-card-back {
   transform: rotateY(180deg);
+}
+
+.alert {
+  top: 10px;
+  position: absolute;
+  max-width: 400px;
+  right: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

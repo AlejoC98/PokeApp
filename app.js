@@ -15,6 +15,8 @@ const __dirname = path.dirname(__filename);
 // Static files
 app.use(express.static('public'));
 
+app.use('/css', express.static(path.join(__dirname, 'node_modules/animate.css')));
+
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/axios/dist')));
 
@@ -33,10 +35,6 @@ app.use(session({
     saveUninitialized: false,
     resave: true
 }));
-
-var urlAuth = [
-    "/Dashboard"
-];
 
 // Views
 app.get("/", (req, res) => {
@@ -59,10 +57,18 @@ app.post("/authentication", (req, res, next) => {
         req.session.user = {
             username
         }
-        res.send('/Dashboard');
         response["url"] = '/Dashboard';
+        res.send(response);
     }).catch((err) => {
-        throw err;
+        // err.message = err.message.replace(/[^\w\s]/gi, " ");
+        err.message = err.message.split("/");
+        err.message = err.message[1].replace(/-/g, " ");
+
+        err.message = err.message.charAt(0).toUpperCase() + err.message.slice(1);;
+
+        res.status(401).json({
+            message: err.message
+        });
     });
 });
 
@@ -91,8 +97,11 @@ app.post("/modules", (req, res) => {
         case "sets":
             module = "../components/modules/cardSetModule";
             break;
-            case "cardsSet":
+        case "cardsSet":
             module = "../components/modules/setCardsModule";
+            break;
+        case "newgame":
+            module = "../components/modules/gameField";
             break;
     }
 
@@ -124,7 +133,6 @@ app.post('/NewGame', async (req, res) => {
 
     req.body["action"] = "setCards";
     var cards = [];
-    var response;
     await getPokeCards(req).then((result) => {
         // getting randon cards from set depending on game level
         for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
@@ -134,13 +142,24 @@ app.post('/NewGame', async (req, res) => {
         // Getting randon card to create matches
         for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
             const element = cards[Math.floor(Math.random()*cards.length)];
-            response = cards.concat([element]);
+            cards = cards.concat([element]);
         }
 
+        console.log(cards);
+
+        // response["module"] = res.render("");
 
     }).catch((err) => {
         console.log(err);
     });
+
+    console.log(cards);
+
+    res.send({
+        func: "createGameField",
+        args: cards
+    });
+
 });
 
 // Listen to port

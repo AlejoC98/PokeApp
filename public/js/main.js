@@ -1,8 +1,6 @@
 axios.interceptors.request.use(config => {
     document.querySelector(".loading-container").style.display = "flex";
     return config;
-}, (err) => {
-    document.querySelector(".loading-container").style.display = "none";
 });
 
 axios.interceptors.response.use(response => {
@@ -10,7 +8,9 @@ axios.interceptors.response.use(response => {
     return response;
 }, (err) => {
     document.querySelector(".loading-container").style.display = "none";
+    return Promise.reject(err);
 });
+
 
 // Initializing bt element
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -58,10 +58,12 @@ function handleSubmit() {
     if (Object.keys(json_params).length > 0)
         axios.post(json_url, json_params).then((res) => {
             res = res.data;
-            if (res != false)
-                window.location = res;
+            if ("url" in res)
+                window.location = res.url;
+            else if ("func" in res)
+                window[res.func].apply(this, [res.args]);
         }).catch((err) => {
-            createErrorMg(".login-error", err.response.data.message);
+            createErrorMg(err.response.data.message);
         });
 }
 

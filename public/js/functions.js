@@ -1,20 +1,24 @@
-function createErrorMg(ele, mg, time = 3000) {
+function createErrorMg(mg, time = 5000) {
 
     // var element = document.querySelector(ele);
-    
-    var element = (typeof ele === "string") ? document.querySelector(ele) : ele;
 
-    if (element.childNodes.length > 0) {
-        element.insertAdjacentHTML("beforeend", "<span class='text-danger text-small'>" + mg + "</span>")
-        element = element.querySelector("span");
-    }
-    else {
-        element.innerText = mg;
-    }
+    var ms_container = '<div class="alert alert-warning alert-dismissible fade show animate__animated animate__fadeInRightBig" role="alert">' +
+    '<strong>Oopss!</strong> ' + mg +
+    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+    '</div>';
+
+    if (document.querySelector(".alert") == null)
+        document.querySelector("main").insertAdjacentHTML("afterbegin", ms_container);
+    else
+        document.querySelector(".alert").remove();
 
 
     setTimeout(() => {
-        (element.tagName === "SPAN") ? element.remove() : element.innerText = "";
+        document.querySelector(".alert").classList.remove("animate__fadeInRightBig");
+        document.querySelector(".alert").classList.add("animate__fadeOutRight");
+        setTimeout(() => {
+            document.querySelector(".alert").remove();
+        }, 1000);
     }, time);
 }
 
@@ -30,7 +34,8 @@ async function openMenu() {
 
     this.classList.toggle("active");
 
-    loadModule(json_params, this.id);
+    // loadModule(json_params, this.id);
+    loadModule(json_params);
 
 
 }
@@ -44,17 +49,18 @@ async function loadModule(json_params = {}) {
 
     await axios.post("/modules", json_params).then((res) => {
         res = res.data;
+
+        // Adding the module
+        document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
+
         switch (json_params.module) {
             case "home":
-                document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
                 break;
             case "sets":
-                document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
                 // Loading pokedata
                 loadCards({"action" : "sets"}, "createSetTable");
                 break;
             case "cardsSet":
-                document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
                 loadCards({ "action" : "setCards", "filter" : eleID }, "createCardElement");
                 break;
         }
@@ -203,12 +209,6 @@ function validatePlayerMatches() {
     }
 }
 
-// function addPlayerName() {
-    
-// }
-
-
-
 function inputMask(type) {
     var status = true;
     if (event.key != "Backspace" && event.key != "Tab")
@@ -243,4 +243,32 @@ function flipCard() {
         event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(0deg)";
     else
         event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(180deg)";
+}
+
+async function createGameField(cards) {
+
+    new bootstrap.Modal("#mainModal", {
+        hide: true
+    });
+
+    await loadModule({"module" : "newgame"});
+
+    cards.forEach((card, ind) => {
+        
+        var cardEle = '<div class="col-sm">' +
+            '<div class="pokecard flip-card" onclick="flipCard()">' +
+                '<div class="flip-card-inner">' +
+                    '<div class="flip-card-front">' +
+                        '<img src="/img/pokecard-backside.png" width="100" alt="">' +
+                    '</div>' +
+                    '<div class="flip-card-back">' +
+                        '<img src="'+ card.images.small +'" width="100" alt="">' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+
+        document.querySelector(".game-container .row").insertAdjacentHTML("beforeend", cardEle);
+
+    });
 }
