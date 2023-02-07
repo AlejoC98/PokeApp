@@ -1,8 +1,26 @@
 <div class="col d-block">
     <h2 class="">Game</h2>
-    <div class="field container-fluid game-container">
-        <div class="row">
-            
+    <div class="field">
+        <div class="container game-container">
+            <div class="row game-info-row">
+                <div class="col-3">
+                    <h2 class="text-white">Turn: <span id="player_turn"></span></h2>
+                </div>
+                <div class="col-3">
+                    <h2 class="text-white">
+                        Time: <span id="counter">01:00</span>
+                    </h2>
+                </div>
+                <div class="col-3">
+                    <h2 class="text-white">
+                        Round: <span id="rounds_count"></span>
+                    </h2>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-danger text-white">Exit</button>
+                </div>
+            </div>
+            <div class="row-cards position-relative"></div>
         </div>
     </div>
 </div>

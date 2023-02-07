@@ -11626,12 +11626,14 @@ body {
   justify-content: center;
 }
 
-.btn-warning {
-  color: #ffffff;
-}
-
 main {
   position: relative;
+}
+
+.alert {
+  position: absolute;
+  max-width: 400px;
+  right: 10px;
 }
 
 .auth-container {
@@ -11927,50 +11929,66 @@ input.num {
   margin: 10px auto;
 }
 
-.field {
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.game-container {
   background-image: url(../img/battle-field.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
 }
-
-.pokecard.flip-card {
-  background-color: transparent;
-  width: 300px;
-  height: 200px;
-  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+.game-container .game-info-row {
+  padding: 1.5em 0;
 }
-
-/* This container is needed to position the front and back side */
-.flip-card-inner {
+.game-container .game-info-row .col-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.game-container .row-cards {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  position: relative;
+  margin: 0 auto;
+  justify-content: center;
+  padding: 3em 0;
+}
+.game-container .row-cards .flip-card {
+  background-color: transparent;
+  width: 110px;
+  height: 150px;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  /* This container is needed to position the front and back side */
+}
+.game-container .row-cards .flip-card .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  /* Position the front and back side */
+  /* Style the front side (fallback if image is missing) */
+  /* Style the back side */
 }
-
-/* Do an horizontal flip when you move the mouse over the flip box container */
-/* Position the front and back side */
-.flip-card-front, .flip-card-back {
+.game-container .row-cards .flip-card .flip-card-inner .flip-card-front, .game-container .row-cards .flip-card .flip-card-inner .flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-/* Style the front side (fallback if image is missing) */
-/* Style the back side */
-.flip-card-back {
+.game-container .row-cards .flip-card .flip-card-inner .flip-card-front {
+  color: black;
+}
+.game-container .row-cards .flip-card .flip-card-inner .flip-card-back {
+  color: white;
   transform: rotateY(180deg);
-}
-
-.alert {
-  top: 10px;
-  position: absolute;
-  max-width: 400px;
-  right: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

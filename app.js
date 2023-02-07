@@ -133,31 +133,27 @@ app.post('/NewGame', async (req, res) => {
 
     req.body["action"] = "setCards";
     var cards = [];
+
+    console.log(req.body);
+
     await getPokeCards(req).then((result) => {
         // getting randon cards from set depending on game level
-        for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
+        for (let index = 0; index < parseInt((req.body.gameLevel - req.body.gameMatches)); index++) {
             cards.push(result[Math.floor(Math.random()*result.length)]);
         }
-
         // Getting randon card to create matches
-        for (let index = 0; index < parseInt(req.body.gameLevel); index++) {
+        for (let index = 0; index < parseInt((req.body.gameMatches)); index++) {
             const element = cards[Math.floor(Math.random()*cards.length)];
             cards = cards.concat([element]);
         }
 
-        console.log(cards);
-
-        // response["module"] = res.render("");
-
     }).catch((err) => {
-        console.log(err);
+        res.status(300).send(err);
     });
-
-    console.log(cards);
 
     res.send({
         func: "createGameField",
-        args: cards
+        args: [cards, req.body.gameMatches, req.body.players]
     });
 
 });

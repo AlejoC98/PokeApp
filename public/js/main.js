@@ -61,7 +61,7 @@ function handleSubmit() {
             if ("url" in res)
                 window.location = res.url;
             else if ("func" in res)
-                window[res.func].apply(this, [res.args]);
+                window[res.func].apply(this, res.args);
         }).catch((err) => {
             createErrorMg(err.response.data.message);
         });

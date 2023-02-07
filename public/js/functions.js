@@ -1,8 +1,12 @@
-function createErrorMg(mg, time = 5000) {
+let flipped_cards = [];
+let last_card;
+let timer = 60;
+
+function createErrorMg(mg, color = "warning", time = 5000) {
 
     // var element = document.querySelector(ele);
 
-    var ms_container = '<div class="alert alert-warning alert-dismissible fade show animate__animated animate__fadeInRightBig" role="alert">' +
+    var ms_container = '<div class="alert alert-'+ color +' alert-dismissible fade show animate__animated animate__fadeInRightBig" role="alert">' +
     '<strong>Oopss!</strong> ' + mg +
     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
     '</div>';
@@ -12,6 +16,7 @@ function createErrorMg(mg, time = 5000) {
     else
         document.querySelector(".alert").remove();
 
+    document.querySelector(".alert").style.top = window.scrollY + 10;
 
     setTimeout(() => {
         document.querySelector(".alert").classList.remove("animate__fadeInRightBig");
@@ -188,24 +193,25 @@ function validatePlayerMatches() {
         let nPlayers = document.getElementById("playerNumber").value,
         gameM = document.getElementById("gameMatches").value;
     
-        if (nPlayers != "" && gameM != "") {
-            var evenly = nPlayers / gameM;
-            if (evenly % 1 === 0){
-                // Removing tooltip
-                new bootstrap.Tooltip("#confirmModal", {disabled: true});
-                document.getElementById("confirmModal").setAttribute("type", "submit");
-                event.target.classList.remove("is-invalid");
-            } else {
-                // Adding tooltip
-                new bootstrap.Tooltip("#confirmModal", {
-                    title: "Number of matches not evenly with players!",
-                });
-                document.getElementById("confirmModal").setAttribute("type", "button");
+        if (nPlayers > 1)
+            if (nPlayers != "" && gameM != "") {
+                var evenly = nPlayers / gameM;
+                if (evenly % 1 === 0){
+                    // Removing tooltip
+                    new bootstrap.Tooltip("#confirmModal", {disabled: true});
+                    document.getElementById("confirmModal").setAttribute("type", "submit");
+                    event.target.classList.remove("is-invalid");
+                } else {
+                    // Adding tooltip
+                    new bootstrap.Tooltip("#confirmModal", {
+                        title: "Number of matches not evenly with players!",
+                    });
+                    document.getElementById("confirmModal").setAttribute("type", "button");
 
-                event.target.classList.add("is-invalid");
+                    event.target.classList.add("is-invalid");
 
+                }
             }
-        }
     }
 }
 
@@ -239,36 +245,91 @@ function inputMask(type) {
 
 function flipCard() {
 
-    if (event.currentTarget.querySelector(".flip-card-inner").style.transform == "rotateY(180deg)")
-        event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(0deg)";
-    else
-        event.currentTarget.querySelector(".flip-card-inner").style.transform = "rotateY(180deg)";
+    var cardEle = event.currentTarget;
+
+    if (flipped_cards.length < 2) {
+        if (!cardEle.querySelector(".flip-card-inner").classList.contains("flipped")) {
+            cardEle.querySelector(".flip-card-inner").classList.toggle("flipped");
+            if (flipped_cards.includes(cardEle.id)){
+                if (cardEle.querySelector(".flip-card-inner:not(.flipped)") != null)
+                    cardEle.querySelector(".flip-card-inner:not(.flipped)").classList.toggle("flipped");
+                document.querySelectorAll("#"+cardEle.id+" .flip-card-inner.flipped").forEach((mcard, ind) => {
+                    mcard.classList.add("matched");
+                });
+                createErrorMg("Match Found!!", "success");
+                flipped_cards = [];
+            } else {
+                flipped_cards.push(cardEle.id);
+            }
+            setTimeout(() => {
+                if (flipped_cards.length == 2) {
+                    flipped_cards.forEach((card, ind) => {
+                        document.querySelector("#"+card+" .flip-card-inner.flipped:not(.matched)").classList.remove("flipped");
+                    });
+                    flipped_cards = [];
+                }
+            }, 2500);
+        }
+    }
 }
 
-async function createGameField(cards) {
+async function createGameField(cards, matches, players) {
 
-    new bootstrap.Modal("#mainModal", {
-        hide: true
-    });
+    document.querySelector(".btn-secondary").click();
 
     await loadModule({"module" : "newgame"});
 
+    document.getElementById("rounds_count").innerText = matches;
+    
+    document.getElementById("player_turn").innerText = players["player1"];
+    
+
+    var rowCount = {
+        "row": 1,
+        "cont" : 6
+    };
+
     cards.forEach((card, ind) => {
-        
-        var cardEle = '<div class="col-sm">' +
-            '<div class="pokecard flip-card" onclick="flipCard()">' +
-                '<div class="flip-card-inner">' +
-                    '<div class="flip-card-front">' +
-                        '<img src="/img/pokecard-backside.png" width="100" alt="">' +
-                    '</div>' +
-                    '<div class="flip-card-back">' +
-                        '<img src="'+ card.images.small +'" width="100" alt="">' +
-                    '</div>' +
+
+        if (document.getElementById("row-" + rowCount["row"]) == null) {
+            var newRow = document.createElement("div");
+            newRow.classList.add("row");
+            newRow.setAttribute("id", "row-" + rowCount["row"]);
+            document.querySelector(".game-container").appendChild(newRow);
+        }
+
+        var cardEle = '<div class="pokecard flip-card card-'+ind+'" onclick="flipCard()" id="'+ card.id +'">' +
+            '<div class="flip-card-inner">' +
+                '<div class="flip-card-front">' +
+                    '<img src="/img/pokecard-backside.png" width="100" alts=""></img>' +
+                '</div>' +
+                '<div class="flip-card-back">' +
+                    '<img src="'+ card.images.small +'" width="100" alt=""></img>' +
                 '</div>' +
             '</div>' +
         '</div>';
 
-        document.querySelector(".game-container .row").insertAdjacentHTML("beforeend", cardEle);
+        document.querySelector(".game-container .row-cards").insertAdjacentHTML("beforeend", cardEle);
 
+        // if (document.querySelector(".game-container #row-" + rowCount["row"]).childNodes.length < rowCount["cont"]) {
+        //     document.querySelector(".game-container #row-" + rowCount["row"]).insertAdjacentHTML("beforebegin", cardEle);
+        // }
+        // else {
+        //     rowCount["row"]++;
+        //     document.querySelector(".game-container").insertAdjacentHTML("beforebegin", "<div class='row' id='row-"+ rowCount["row"] +"'></div>");
+        //     document.querySelector(".game-container #row-" + rowCount["row"]).insertAdjacentHTML("beforebegin", cardEle);
+        // }
     });
+
+    gameTimer();
+}
+
+function gameTimer() {
+    var top = 0;
+   const timeCounter = setInterval(() => {
+        if (timer === top)
+            clearInterval(timeCounter);
+        else
+            document.getElementById("counter").innerText = ( (timer - 1).toString().length == 1 ) ? "00:0" + (timer -= 1) : "00:" + (timer -= 1);
+   }, 1000);
 }
