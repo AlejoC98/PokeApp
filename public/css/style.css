@@ -11634,6 +11634,7 @@ main {
   position: absolute;
   max-width: 400px;
   right: 10px;
+  z-index: 1000;
 }
 
 .auth-container {
@@ -11941,7 +11942,7 @@ input.num {
 .game-container .game-info-row {
   padding: 1.5em 0;
 }
-.game-container .game-info-row .col-3 {
+.game-container .game-info-row .col-2, .game-container .game-info-row .col-4 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11956,10 +11957,12 @@ input.num {
   padding: 3em 0;
 }
 .game-container .row-cards .pokecard.flip-card {
+  z-index: 10000;
   cursor: pointer;
   background-color: transparent;
   width: 110px;
   height: 150px;
+  transition: 1s all;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
   /* This container is needed to position the front and back side */
 }
@@ -11970,6 +11973,7 @@ input.num {
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  transition: 1s all;
   /* Position the front and back side */
   /* Style the front side (fallback if image is missing) */
   /* Style the back side */
@@ -11996,6 +12000,7 @@ input.num {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -12005,5 +12010,57 @@ input.num {
   left: 0;
   webkit-backdrop-filter: blur(10px);
 }
+
+.matched-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 92%;
+  height: 94%;
+  position: absolute;
+  z-index: 1000;
+  top: 4px;
+  right: 4px;
+  border-radius: 5px;
+  overflow: hidden;
+  webkit-backdrop-filter: blur(3px);
+}
+
+.matched-card:after {
+  animation: shine 5s ease-in-out infinite;
+  animation-fill-mode: forwards;
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -210%;
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.13) 77%, rgba(255, 255, 255, 0.5) 92%, rgba(255, 255, 255, 0) 100%);
+}
+
+.matched-card:active:after {
+  opacity: 0;
+}
+
+@keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: 130%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.7s, 0.7s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: 130%;
+    transition-property: left, top, opacity;
+  }
+}
+@keyframes zoomToCenter {}
 
 /*# sourceMappingURL=style.css.map */

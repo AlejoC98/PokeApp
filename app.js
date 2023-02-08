@@ -134,8 +134,7 @@ app.post('/NewGame', async (req, res) => {
     req.body["action"] = "setCards";
     var cards = [];
     var matches = [];
-
-    console.log(req.body);
+    var players = {};
 
     await getPokeCards(req).then((result) => {
         // getting randon cards from set depending on game level
@@ -146,20 +145,29 @@ app.post('/NewGame', async (req, res) => {
         for (let index = 0; index < parseInt((req.body.gameMatches)); index++) {
             var element = cards[Math.floor(Math.random()*cards.length)];
 
-            if (matches.includes(element.id))
+
+            while (cards.filter((v) => (v === element)).length == 2) {
                 element = cards[Math.floor(Math.random()*cards.length)];
+            }
 
             cards = cards.concat([element]);
             matches.push(element.id);
-
+            console.log(cards);
         }
     }).catch((err) => {
         res.status(300).send(err);
     });
 
+    Object.keys(req.body.players).forEach((player) => {
+        players[player] = {
+            "name" : req.body.players[player],
+            "color" : ""
+        }
+    });
+
     res.send({
         func: "createGameField",
-        args: [cards, req.body.gameMatches, req.body.players, req.body.gameRounds]
+        args: [cards, req.body.gameMatches, players, req.body.gameRounds]
     });
 
 });

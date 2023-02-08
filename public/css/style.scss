@@ -40,6 +40,7 @@ main {
     position: absolute;
     max-width: 400px;
     right: 10px;
+    z-index: 1000;
 }
 
 .auth-container {
@@ -398,7 +399,7 @@ input.num {
 
     .game-info-row {
         padding: 1.5em 0;
-        .col-3 {
+        .col-2, .col-4 {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -414,11 +415,13 @@ input.num {
         justify-content: center;
         padding: 3em 0;
         .pokecard.flip-card {
+            z-index: 10000;
             cursor: pointer;
             background-color: transparent;
             width: 110px;
             height: 150px;
             // border: 1px solid #f1f1f1;
+            transition: 1s all;
             perspective: 1000px; /* Remove this if you don't want the 3D effect */
     
             /* This container is needed to position the front and back side */
@@ -429,7 +432,7 @@ input.num {
                 text-align: center;
                 transition: transform 0.8s;
                 transform-style: preserve-3d;
-    
+                transition: 1s all;
                 /* Position the front and back side */
                 .flip-card-front, .flip-card-back {
                     position: absolute;
@@ -452,6 +455,7 @@ input.num {
                 .flip-card-back {
                     // background-color: dodgerblue;
                     color: white;
+                    // transform: rotateY(180deg) scale(1.3);
                     transform: rotateY(180deg);
                 }
             }
@@ -463,6 +467,7 @@ input.num {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -471,4 +476,69 @@ input.num {
     z-index: 1000;
     left: 0;
     webkit-backdrop-filter: blur(10px);
+}
+
+.matched-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 92%;
+    height: 94%;
+    position: absolute;
+    z-index: 1000;
+    top: 4px;
+    right: 4px;
+    border-radius: 5px;
+    overflow: hidden;
+    webkit-backdrop-filter: blur(3px);
+}
+
+// Reflection effect
+.matched-card:after {
+    animation: shine 5s ease-in-out infinite;
+    animation-fill-mode: forwards;  
+    content: "";
+    position: absolute;
+    top: -110%;
+    left: -210%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    transform: rotate(30deg);
+
+    background: rgba(255, 255, 255, 0.13);
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0.13) 0%,
+        rgba(255, 255, 255, 0.13) 77%,
+        rgba(255, 255, 255, 0.5) 92%,
+        rgba(255, 255, 255, 0.0) 100%
+    );
+}
+
+.matched-card:active:after {
+    opacity: 0;
+}
+
+
+// Animations
+@keyframes shine{
+    10% {
+      opacity: 1;
+      top: -30%;
+      left: 130%;
+      transition-property: left, top, opacity;
+      transition-duration: 0.7s, 0.7s, 0.15s;
+      transition-timing-function: ease;
+    }
+    100% {
+      opacity: 0;
+      top: -30%;
+      left: 130%;
+      transition-property: left, top, opacity;
+    }
+}
+
+@keyframes zoomToCenter {
+
 }

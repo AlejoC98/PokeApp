@@ -1,10 +1,16 @@
 let flipped_cards = [];
 let last_card;
 let timer = 60;
-let gmatches = {
+let gMatches = {
     "total": 0,
     "found": 0
 }
+
+let gPlayers;
+let gRounds;
+let gTurn;
+
+const playersColors = ["#B7F0AD", "#A22522", "#FF8E72", "#32908F", "#C47AC0", "#FFBC42", "#52D1DC", "#9D96B8", "#415D43", "#C6AC8F",]
 
 function createErrorMg(mg, color = "warning", time = 5000) {
 
@@ -199,8 +205,7 @@ function validatePlayerMatches() {
     
         if (nPlayers > 1)
             if (nPlayers != "" && gameM != "") {
-                var evenly = nPlayers / gameM;
-                if (evenly % 1 === 0){
+                if (gameM % nPlayers === 0){
                     // Removing tooltip
                     new bootstrap.Tooltip("#confirmModal", {disabled: true});
                     document.getElementById("confirmModal").setAttribute("type", "submit");
@@ -236,7 +241,6 @@ function inputMask(type) {
 
                 break;
             case "letters":
-                // if (/\d/.test(event.key) == true)
                 if (/\d/.test(event.key) == true)
                     status = false;
                 break;
@@ -254,14 +258,20 @@ function flipCard() {
     if (!cardEle.querySelector(".flip-card-inner").classList.contains("flipped"))
         if (flipped_cards.length < 2) {
             cardEle.querySelector(".flip-card-inner").classList.add("flipped");
+            cardEle.style.zIndex = "1000000";
 
             if (flipped_cards.includes(cardEle.id)) {
                 createErrorMg("You found a match!!", "success");
-                document.querySelectorAll(".flipped").forEach((ele, ind) => {
-                    ele.classList.add("matched");
-                });
-                gmatches["found"] += 1;
-                updateGameInfo(gmatches.total);
+                setTimeout(() => {
+                    document.querySelectorAll(".flipped:not(.matched)").forEach((ele, ind) => {
+                        ele.classList.add("matched");
+                        ele.insertAdjacentHTML("afterbegin", "<div class='matched-card'> <h1 class='text-white'>" + gPlayers["player" + gTurn].name.substr(0,1) + "</h1></div>");
+    
+                        ele.querySelector(".matched-card").style.background = convertHexToRGBA(gPlayers["player" + gTurn].color, 0.8);
+                    }); 
+                }, 1000);
+                gMatches["found"] += 1;
+                updateGameInfo(gMatches.total);
                 flipped_cards = [];
             } else {
                 flipped_cards.push(cardEle.id)
@@ -269,41 +279,72 @@ function flipCard() {
             
             if (flipped_cards.length === 2) {
                 setTimeout(() => {
-                    
                     flipped_cards.find((card) => {
                         document.querySelector("#"+ card +" .flip-card-inner.flipped:not(.matched)").classList.remove("flipped");
                     });
+                    updateGameInfo();
                     flipped_cards = [];
-                }, 2200);
+                }, 1700);
             }
         }
 }
 
-function updateGameInfo(matches = "", players = {}, rounds = "") {
+function updateGameInfo() {
     
-    if (matches != "") {
-        gmatches["total"] = parseInt(matches);
-        document.getElementById("matches").innerText = gmatches.found +" / " + gmatches.total;
+    if (gMatches != "") {
+        document.querySelector("#matches span").innerText = gMatches.found +" / " + gMatches.total;
     }
 
-    if (rounds != "")
-        document.getElementById("rounds_count").innerText = rounds;
+    if (gRounds != "")
+        document.querySelector("#rounds_count span").innerText = gRounds;
 
-    if (Object.keys(players).length > 0)
-        document.getElementById("player_turn").innerText = players["player1"];
+    if (Object.keys(gPlayers).length > 0){
+        if (gTurn === undefined)
+            gTurn = 1;
+        else if (gTurn + 1 <= Object.keys(gPlayers).length)
+            gTurn += 1;
+        else
+            gTurn = 1;
+        
+        document.querySelector("#player_turn span").innerText = gPlayers["player" + gTurn].name;
+        document.querySelector("#player_turn i").style.color = gPlayers["player" + gTurn].color;
+        timer = 60;
+    }
 
-    if (gmatches.total === gmatches.found) {
+    if (gMatches.total === gMatches.found) {
         document.querySelector(".end-game").classList.toggle("d-none");
+        timer = 0;
+    } else {
+        document.querySelector("#counter span").innerHTML = "&infin;";
     }
 }
 
 async function createGameField(cards, matches, players, rounds) {
 
+    gMatches["total"] = parseInt(matches);
+
+    let usedColors = [];
+    var playerColor = playersColors[Math.floor(Math.random()*playersColors.length)];
+
+    for (var player of Object.keys(players)) {
+        
+        while (usedColors.includes(playerColor)) {
+            playerColor = playersColors[Math.floor(Math.random()*playersColors.length)];
+        }
+
+        usedColors.push(playerColor);
+        players[player].color = playerColor;
+    }
+
+    gPlayers = players;
+
+    gRounds = rounds;
+
     document.querySelector(".btn-secondary").click();
 
     await loadModule({"module" : "newgame"});
 
-    updateGameInfo(matches, players, rounds);
+    updateGameInfo();
 
     var rowCount = {
         "row": 1,
@@ -334,15 +375,39 @@ async function createGameField(cards, matches, players, rounds) {
 
     });
 
-    gameTimer();
+    if (Object.keys(players).length > 1)
+        gameTimer();
 }
 
 function gameTimer() {
     var top = 0;
-   const timeCounter = setInterval(() => {
-        if (timer === top)
+    const timeCounter = setInterval(() => {
+        if (timer === top) {
             clearInterval(timeCounter);
-        else
-            document.getElementById("counter").innerText = ( (timer - 1).toString().length == 1 ) ? "00:0" + (timer -= 1) : "00:" + (timer -= 1);
-   }, 1000);
+            updateGameInfo();
+            timer = 60;
+            gameTimer();
+        } else {
+            document.querySelector("#counter span").innerText = ( (timer - 1).toString().length == 1 ) ? "00:0" + (timer -= 1) : "00:" + (timer -= 1);
+        }
+    }, 1000);
 }
+
+const convertHexToRGBA = (hexCode, opacity = 1) => {  
+    let hex = hexCode.replace('#', '');
+    
+    if (hex.length === 3) {
+        hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    }    
+    
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    /* Backward compatibility for whole number based opacity values. */
+    if (opacity > 1 && opacity <= 100) {
+        opacity = opacity / 100;   
+    }
+
+    return `rgba(${r},${g},${b},${opacity})`;
+};
