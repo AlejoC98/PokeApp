@@ -133,6 +133,7 @@ app.post('/NewGame', async (req, res) => {
 
     req.body["action"] = "setCards";
     var cards = [];
+    var matches = [];
 
     console.log(req.body);
 
@@ -143,17 +144,22 @@ app.post('/NewGame', async (req, res) => {
         }
         // Getting randon card to create matches
         for (let index = 0; index < parseInt((req.body.gameMatches)); index++) {
-            const element = cards[Math.floor(Math.random()*cards.length)];
-            cards = cards.concat([element]);
-        }
+            var element = cards[Math.floor(Math.random()*cards.length)];
 
+            if (matches.includes(element.id))
+                element = cards[Math.floor(Math.random()*cards.length)];
+
+            cards = cards.concat([element]);
+            matches.push(element.id);
+
+        }
     }).catch((err) => {
         res.status(300).send(err);
     });
 
     res.send({
         func: "createGameField",
-        args: [cards, req.body.gameMatches, req.body.players]
+        args: [cards, req.body.gameMatches, req.body.players, req.body.gameRounds]
     });
 
 });

@@ -1,22 +1,45 @@
 <div class="col d-block">
     <h2 class="">Game</h2>
     <div class="field">
-        <div class="container game-container">
+        <div class="container game-container position-relative">
+            <div class="end-game d-none">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="text-white">End of game!</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn-primary">Try Again!</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-danger">Exit</button>
+                    </div>
+                </div>
+            </div>
             <div class="row game-info-row">
-                <div class="col-3">
-                    <h2 class="text-white">Turn: <span id="player_turn"></span></h2>
+                <div class="col-2">
+                    <h4 class="text-white">Turn: <span id="player_turn"></span></h4>
                 </div>
-                <div class="col-3">
-                    <h2 class="text-white">
+                <div class="col-2">
+                    <h4 class="text-white">
                         Time: <span id="counter">01:00</span>
-                    </h2>
+                    </h4>
                 </div>
-                <div class="col-3">
-                    <h2 class="text-white">
+                <div class="col-2">
+                    <h4 class="text-white">
                         Round: <span id="rounds_count"></span>
-                    </h2>
+                    </h4>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
+                    <h4 class="text-white">
+                        Matches Found: <span id="matches"></span>
+                    </h4>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-info text-white">Hint</button>
+                </div>
+                <div class="col-1">
                     <button class="btn btn-danger text-white">Exit</button>
                 </div>
             </div>

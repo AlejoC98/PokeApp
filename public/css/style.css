@@ -11955,14 +11955,15 @@ input.num {
   justify-content: center;
   padding: 3em 0;
 }
-.game-container .row-cards .flip-card {
+.game-container .row-cards .pokecard.flip-card {
+  cursor: pointer;
   background-color: transparent;
   width: 110px;
   height: 150px;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
   /* This container is needed to position the front and back side */
 }
-.game-container .row-cards .flip-card .flip-card-inner {
+.game-container .row-cards .pokecard.flip-card .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
@@ -11973,7 +11974,7 @@ input.num {
   /* Style the front side (fallback if image is missing) */
   /* Style the back side */
 }
-.game-container .row-cards .flip-card .flip-card-inner .flip-card-front, .game-container .row-cards .flip-card .flip-card-inner .flip-card-back {
+.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-front, .game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -11983,12 +11984,26 @@ input.num {
   justify-content: center;
   align-items: center;
 }
-.game-container .row-cards .flip-card .flip-card-inner .flip-card-front {
+.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-front {
   color: black;
 }
-.game-container .row-cards .flip-card .flip-card-inner .flip-card-back {
+.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-back {
   color: white;
   transform: rotateY(180deg);
+}
+
+.end-game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background: RGBA(51, 51, 51, 0.62);
+  z-index: 1000;
+  left: 0;
+  webkit-backdrop-filter: blur(10px);
 }
 
 /*# sourceMappingURL=style.css.map */

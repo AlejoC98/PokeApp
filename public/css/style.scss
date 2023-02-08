@@ -413,7 +413,8 @@ input.num {
         margin: 0 auto;
         justify-content: center;
         padding: 3em 0;
-        .flip-card {
+        .pokecard.flip-card {
+            cursor: pointer;
             background-color: transparent;
             width: 110px;
             height: 150px;
@@ -456,4 +457,18 @@ input.num {
             }
         }
     }
+}
+
+.end-game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: RGBA(51,51,51,0.62);
+    z-index: 1000;
+    left: 0;
+    webkit-backdrop-filter: blur(10px);
 }

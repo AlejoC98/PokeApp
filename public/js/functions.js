@@ -1,6 +1,10 @@
 let flipped_cards = [];
 let last_card;
 let timer = 60;
+let gmatches = {
+    "total": 0,
+    "found": 0
+}
 
 function createErrorMg(mg, color = "warning", time = 5000) {
 
@@ -16,7 +20,7 @@ function createErrorMg(mg, color = "warning", time = 5000) {
     else
         document.querySelector(".alert").remove();
 
-    document.querySelector(".alert").style.top = window.scrollY + 10;
+    document.querySelector(".alert").style.top = "25%";
 
     setTimeout(() => {
         document.querySelector(".alert").classList.remove("animate__fadeInRightBig");
@@ -246,43 +250,60 @@ function inputMask(type) {
 function flipCard() {
 
     var cardEle = event.currentTarget;
+    
+    if (!cardEle.querySelector(".flip-card-inner").classList.contains("flipped"))
+        if (flipped_cards.length < 2) {
+            cardEle.querySelector(".flip-card-inner").classList.add("flipped");
 
-    if (flipped_cards.length < 2) {
-        if (!cardEle.querySelector(".flip-card-inner").classList.contains("flipped")) {
-            cardEle.querySelector(".flip-card-inner").classList.toggle("flipped");
-            if (flipped_cards.includes(cardEle.id)){
-                if (cardEle.querySelector(".flip-card-inner:not(.flipped)") != null)
-                    cardEle.querySelector(".flip-card-inner:not(.flipped)").classList.toggle("flipped");
-                document.querySelectorAll("#"+cardEle.id+" .flip-card-inner.flipped").forEach((mcard, ind) => {
-                    mcard.classList.add("matched");
+            if (flipped_cards.includes(cardEle.id)) {
+                createErrorMg("You found a match!!", "success");
+                document.querySelectorAll(".flipped").forEach((ele, ind) => {
+                    ele.classList.add("matched");
                 });
-                createErrorMg("Match Found!!", "success");
+                gmatches["found"] += 1;
+                updateGameInfo(gmatches.total);
                 flipped_cards = [];
             } else {
-                flipped_cards.push(cardEle.id);
+                flipped_cards.push(cardEle.id)
             }
-            setTimeout(() => {
-                if (flipped_cards.length == 2) {
-                    flipped_cards.forEach((card, ind) => {
-                        document.querySelector("#"+card+" .flip-card-inner.flipped:not(.matched)").classList.remove("flipped");
+            
+            if (flipped_cards.length === 2) {
+                setTimeout(() => {
+                    
+                    flipped_cards.find((card) => {
+                        document.querySelector("#"+ card +" .flip-card-inner.flipped:not(.matched)").classList.remove("flipped");
                     });
                     flipped_cards = [];
-                }
-            }, 2500);
+                }, 2200);
+            }
         }
+}
+
+function updateGameInfo(matches = "", players = {}, rounds = "") {
+    
+    if (matches != "") {
+        gmatches["total"] = parseInt(matches);
+        document.getElementById("matches").innerText = gmatches.found +" / " + gmatches.total;
+    }
+
+    if (rounds != "")
+        document.getElementById("rounds_count").innerText = rounds;
+
+    if (Object.keys(players).length > 0)
+        document.getElementById("player_turn").innerText = players["player1"];
+
+    if (gmatches.total === gmatches.found) {
+        document.querySelector(".end-game").classList.toggle("d-none");
     }
 }
 
-async function createGameField(cards, matches, players) {
+async function createGameField(cards, matches, players, rounds) {
 
     document.querySelector(".btn-secondary").click();
 
     await loadModule({"module" : "newgame"});
 
-    document.getElementById("rounds_count").innerText = matches;
-    
-    document.getElementById("player_turn").innerText = players["player1"];
-    
+    updateGameInfo(matches, players, rounds);
 
     var rowCount = {
         "row": 1,
@@ -298,7 +319,7 @@ async function createGameField(cards, matches, players) {
             document.querySelector(".game-container").appendChild(newRow);
         }
 
-        var cardEle = '<div class="pokecard flip-card card-'+ind+'" onclick="flipCard()" id="'+ card.id +'">' +
+        var cardEle = '<div class="pokecard flip-card" onclick="flipCard()" id="'+ card.id +'">' +
             '<div class="flip-card-inner">' +
                 '<div class="flip-card-front">' +
                     '<img src="/img/pokecard-backside.png" width="100" alts=""></img>' +
@@ -311,14 +332,6 @@ async function createGameField(cards, matches, players) {
 
         document.querySelector(".game-container .row-cards").insertAdjacentHTML("beforeend", cardEle);
 
-        // if (document.querySelector(".game-container #row-" + rowCount["row"]).childNodes.length < rowCount["cont"]) {
-        //     document.querySelector(".game-container #row-" + rowCount["row"]).insertAdjacentHTML("beforebegin", cardEle);
-        // }
-        // else {
-        //     rowCount["row"]++;
-        //     document.querySelector(".game-container").insertAdjacentHTML("beforebegin", "<div class='row' id='row-"+ rowCount["row"] +"'></div>");
-        //     document.querySelector(".game-container #row-" + rowCount["row"]).insertAdjacentHTML("beforebegin", cardEle);
-        // }
     });
 
     gameTimer();
