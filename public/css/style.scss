@@ -473,9 +473,24 @@ input.num {
     position: absolute;
     top: 0;
     background: RGBA(51,51,51,0.62);
-    z-index: 1000;
+    z-index: 100000;
     left: 0;
     webkit-backdrop-filter: blur(10px);
+    transition: 1S all;
+
+    .row {
+        width: 50%;
+        .col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            table {
+                margin: 20px 0;
+                width: 60%;
+            }
+        }
+    }
 }
 
 .matched-card {
@@ -528,7 +543,8 @@ input.num {
       top: -30%;
       left: 130%;
       transition-property: left, top, opacity;
-      transition-duration: 0.7s, 0.7s, 0.15s;
+    //   transition-duration: 0.7s, 0.7s, 0.15s;
+      transition-duration: 0.9s, 0.9s, 0.20s;
       transition-timing-function: ease;
     }
     100% {
@@ -537,8 +553,4 @@ input.num {
       left: 130%;
       transition-property: left, top, opacity;
     }
-}
-
-@keyframes zoomToCenter {
-
 }

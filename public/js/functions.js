@@ -7,7 +7,10 @@ let gMatches = {
 }
 
 let gPlayers;
-let gRounds;
+let gRounds = {
+    "total": 0,
+    "current": 0
+};
 let gTurn;
 
 const playersColors = ["#B7F0AD", "#A22522", "#FF8E72", "#32908F", "#C47AC0", "#FFBC42", "#52D1DC", "#9D96B8", "#415D43", "#C6AC8F",]
@@ -258,18 +261,26 @@ function flipCard() {
     if (!cardEle.querySelector(".flip-card-inner").classList.contains("flipped"))
         if (flipped_cards.length < 2) {
             cardEle.querySelector(".flip-card-inner").classList.add("flipped");
-            cardEle.style.zIndex = "1000000";
-
             if (flipped_cards.includes(cardEle.id)) {
                 createErrorMg("You found a match!!", "success");
                 setTimeout(() => {
                     document.querySelectorAll(".flipped:not(.matched)").forEach((ele, ind) => {
                         ele.classList.add("matched");
-                        ele.insertAdjacentHTML("afterbegin", "<div class='matched-card'> <h1 class='text-white'>" + gPlayers["player" + gTurn].name.substr(0,1) + "</h1></div>");
-    
-                        ele.querySelector(".matched-card").style.background = convertHexToRGBA(gPlayers["player" + gTurn].color, 0.8);
-                    }); 
-                }, 1000);
+                        ele.insertAdjacentHTML(
+                            "afterbegin", 
+                            "<div class='matched-card'>" + 
+                                "<h1 class='text-white'>" + 
+                                    gPlayers["player" + gTurn].name.substr(0,1) + 
+                                "</h1>"+
+                            "</div>"
+                        );
+                        ele.querySelector(
+                            ".matched-card"
+                        ).style.background = convertHexToRGBA(gPlayers["player" + gTurn].color, 0.8);
+                        fadeIn(ele.querySelector(".matched-card"), 300);
+                    });
+                    gPlayers["player" + gTurn] += 1;
+                }, 1500);
                 gMatches["found"] += 1;
                 updateGameInfo(gMatches.total);
                 flipped_cards = [];
@@ -295,8 +306,10 @@ function updateGameInfo() {
         document.querySelector("#matches span").innerText = gMatches.found +" / " + gMatches.total;
     }
 
-    if (gRounds != "")
-        document.querySelector("#rounds_count span").innerText = gRounds;
+    if (gRounds.total != 0) {
+        document.querySelector("#rounds_count span").innerText = gRounds.current + "/" + gRounds.total;
+        gRounds.current = 1;
+    }
 
     if (Object.keys(gPlayers).length > 0){
         if (gTurn === undefined)
@@ -312,6 +325,36 @@ function updateGameInfo() {
     }
 
     if (gMatches.total === gMatches.found) {
+
+        gRounds.current += 1;
+
+        var trTable = "";
+        Object.keys(gPlayers).forEach((player, ind) => {
+            trTable += "<tr class='text-center'>" +
+                "<th scope='row'>"+ gPlayers[player].name +"</th>" +
+                "<td>Matches found: "+ gPlayers[player].matches +"</td>" +
+            "</tr>";
+        });
+
+        if (gRounds.current < gRounds.total) {
+            document.querySelector(".end-game h1").innerText = "End of game!";
+        } else {
+            document.querySelector(".end-game h1").innerText = "Round " + (gRounds.current - 1) + " Finished";
+        }
+
+        document.querySelector(".end-game").insertAdjacentHTML(
+            "beforeend", 
+            "<div class='row'>"+
+                "<div class='col'>"+
+                    "<table class='table text-white'>" +
+                        "<tbody>" +
+                            trTable +
+                        "</tbody>" +
+                    "</table>" +
+                "</div>"+
+            "</div>");
+        
+
         document.querySelector(".end-game").classList.toggle("d-none");
         timer = 0;
     } else {
@@ -338,7 +381,7 @@ async function createGameField(cards, matches, players, rounds) {
 
     gPlayers = players;
 
-    gRounds = rounds;
+    gRounds.total = rounds;
 
     document.querySelector(".btn-secondary").click();
 
@@ -411,3 +454,19 @@ const convertHexToRGBA = (hexCode, opacity = 1) => {
 
     return `rgba(${r},${g},${b},${opacity})`;
 };
+
+function fadeIn(el, time) {
+    el.style.opacity = 0;
+
+    var last = +new Date();
+    var tick = function() {
+        el.style.opacity = +el.style.opacity + (new Date() - last) / time;
+        last = +new Date();
+
+        if (+el.style.opacity < 1) {
+        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+        }
+    };
+
+    tick();
+}

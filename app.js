@@ -129,7 +129,7 @@ app.get('/Dashboard', (req, res) => {
     // }
 });
 
-app.post('/NewGame', async (req, res) => {
+app.post('/loadRound', async (req, res) => {
 
     req.body["action"] = "setCards";
     var cards = [];
@@ -161,7 +161,8 @@ app.post('/NewGame', async (req, res) => {
     Object.keys(req.body.players).forEach((player) => {
         players[player] = {
             "name" : req.body.players[player],
-            "color" : ""
+            "color" : "",
+            "matches": 1
         }
     });
 

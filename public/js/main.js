@@ -33,7 +33,7 @@ function handleSubmit() {
             json_url = "/authentication";
             break;
         case "gameRulesForm":
-            json_url = "/NewGame";
+            json_url = "/loadRound";
 
             var new_json = {};
 
