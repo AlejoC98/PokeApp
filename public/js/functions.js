@@ -1,6 +1,5 @@
 let flipped_cards = [];
 let last_card;
-let timer = 60;
 let gMatches = {
     "total": 0,
     "found": 0
@@ -9,9 +8,14 @@ let gMatches = {
 let gPlayers;
 let gRounds = {
     "total": 0,
-    "current": 0
+    "current": 1
 };
 let gTurn;
+let gRules = {
+    "action" : "",
+    "filter" : "",
+    "level" : ""
+}
 
 const playersColors = ["#B7F0AD", "#A22522", "#FF8E72", "#32908F", "#C47AC0", "#FFBC42", "#52D1DC", "#9D96B8", "#415D43", "#C6AC8F",]
 
@@ -83,7 +87,7 @@ async function loadModule(json_params = {}) {
                 break;
         }
     }).catch((err) => {
-        console.log(err);
+        createErrorMg(err.response.data.message);
     });
 }
 
@@ -94,7 +98,7 @@ async function loadCards(json_params, func) {
         if ("content" in res)
             window[func].apply(this, [res.content]);
     }).catch((err) => {
-        console.log(err);
+        createErrorMg(err.response.data.message);
     });
 }
 
@@ -144,7 +148,7 @@ function loadForm(json_params, element) {
         // document.querySelectorAll()
 
     }).catch((err) => {
-        console.log(err);
+        createErrorMg(err.response.data.message);
     });
 }
 
@@ -172,7 +176,7 @@ async function updateSelectOpt(select, data) {
             }
         }
     }).catch((err) => {
-        console.log(err);
+        createErrorMg(err.response.data.message);
     });
 }
 
@@ -277,12 +281,14 @@ function flipCard() {
                         ele.querySelector(
                             ".matched-card"
                         ).style.background = convertHexToRGBA(gPlayers["player" + gTurn].color, 0.8);
-                        fadeIn(ele.querySelector(".matched-card"), 300);
+                        fadeIn(ele.querySelector(".matched-card"), 200);
                     });
-                    gPlayers["player" + gTurn] += 1;
+                    setTimeout(() => {
+                        gPlayers["player" + gTurn].matches += 1;
+                        gMatches["found"] += 1;
+                        updateGameInfo(gMatches.total);
+                    }, 600);
                 }, 1500);
-                gMatches["found"] += 1;
-                updateGameInfo(gMatches.total);
                 flipped_cards = [];
             } else {
                 flipped_cards.push(cardEle.id)
@@ -308,61 +314,110 @@ function updateGameInfo() {
 
     if (gRounds.total != 0) {
         document.querySelector("#rounds_count span").innerText = gRounds.current + "/" + gRounds.total;
-        gRounds.current = 1;
     }
 
     if (Object.keys(gPlayers).length > 0){
-        if (gTurn === undefined)
-            gTurn = 1;
-        else if (gTurn + 1 <= Object.keys(gPlayers).length)
-            gTurn += 1;
-        else
-            gTurn = 1;
-        
-        document.querySelector("#player_turn span").innerText = gPlayers["player" + gTurn].name;
-        document.querySelector("#player_turn i").style.color = gPlayers["player" + gTurn].color;
-        timer = 60;
+        if (Object.keys(gPlayers).length >= 1 || document.querySelector("#player_turn span").innerText == "") {
+            if (gTurn === undefined)
+                gTurn = 1;
+            else if (gTurn + 1 <= Object.keys(gPlayers).length)
+                gTurn += 1;
+            else
+                gTurn = 1;
+            
+            document.querySelector("#player_turn span").innerText = gPlayers["player" + gTurn].name;
+            document.querySelector("#player_turn i").style.color = gPlayers["player" + gTurn].color;
+            timer = 60;
+        }
     }
 
     if (gMatches.total === gMatches.found) {
+        // var trTable = "";
 
-        gRounds.current += 1;
-
-        var trTable = "";
-        Object.keys(gPlayers).forEach((player, ind) => {
-            trTable += "<tr class='text-center'>" +
-                "<th scope='row'>"+ gPlayers[player].name +"</th>" +
-                "<td>Matches found: "+ gPlayers[player].matches +"</td>" +
-            "</tr>";
+        // Cleaning the result row
+        document.querySelectorAll(".end-game .row:not(.header)").forEach((row, ind) => {
+            row.remove();
         });
 
-        if (gRounds.current < gRounds.total) {
-            document.querySelector(".end-game h1").innerText = "End of game!";
-        } else {
-            document.querySelector(".end-game h1").innerText = "Round " + (gRounds.current - 1) + " Finished";
-        }
+        // Object.keys(gPlayers).forEach((player, ind) => {
+        //     trTable += "<tr class='text-center'>" +
+        //         "<th scope='row'>"+ gPlayers[player].name +"</th>" +
+        //         "<td>Matches found: "+ gPlayers[player].matches +"</td>" +
+        //     "</tr>";
+        // });
 
-        document.querySelector(".end-game").insertAdjacentHTML(
-            "beforeend", 
-            "<div class='row'>"+
+        if (gRounds.current < gRounds.total) {
+            document.querySelector(".end-game h1").innerText = "Round " + gRounds.current + " Finished";
+            var insertRow = "<div class='row'>" +
+                "<div class='col'>" +
+                    "<p class='text-white'>Starting new round in <span id='newRoundCounter'>00:05</span></p>" +
+                "</div>" +
+            "</div>";
+            document.querySelector(".end-game").insertAdjacentHTML("beforeend", insertRow);
+            gRounds.current += 1;
+        } else {
+            document.querySelector(".end-game h1").innerText = "End of game!";
+
+            var resultTable = "<div class='row'>"+
                 "<div class='col'>"+
                     "<table class='table text-white'>" +
-                        "<tbody>" +
-                            trTable +
-                        "</tbody>" +
+                        "<tbody></tbody>" +
                     "</table>" +
                 "</div>"+
-            "</div>");
+            "</div>";
+
+            document.querySelector(".end-game").insertAdjacentHTML("beforeend", resultTable);
+
+            var winner = [];
+            var players_results;
+            Object.keys(gPlayers).forEach((pl) => {
+                if (players_results == undefined || gPlayers[pl].matches > players_results) {
+                    winner = [gPlayers[pl].name];
+                    players_results = gPlayers[pl].matches;
+                } else if (gPlayers[pl].matches == players_results) {
+                    winner.push(gPlayers[pl].name);
+                }
+            });
+            
+            var insertTr = "<tr class='text-center'>" +
+                "<th colspan='2'><strong>Winner" + ((winner.length > 1) ? "s - Even Game!" : "") + "</strong></th>" +
+            "</tr>";
+
+            for (var player of winner) {
+                insertTr += "<tr class='text-center'>" +
+                    "<th scope='row'>" + player + "</th>" +
+                    "<th>Matches found: "+ players_results + "</th>" +
+                "</tr>";
+            }
+
+            document.querySelector(".end-game tbody").insertAdjacentHTML("beforeend", insertTr);
+
+            var insertRow = "<div class='row'>" +
+                "<div class='col'>" +
+                    "<button class='btn btn-primary'>Try Again!</button>" +
+                "</div>" +
+                "<div class='col'>" +
+                    "<a href='/Dashboard' class='btn btn-danger text-white'>Exit</a>" +
+                "</div>" +
+            "</div>";
+
+            document.querySelector(".end-game").insertAdjacentHTML("beforeend", insertRow);
+        }
         
+        if (document.getElementById("newRoundCounter") != null)
+            gameTimer(5, "#newRoundCounter", "loadNewRound");
 
         document.querySelector(".end-game").classList.toggle("d-none");
-        timer = 0;
     } else {
         document.querySelector("#counter span").innerHTML = "&infin;";
     }
 }
 
-async function createGameField(cards, matches, players, rounds) {
+async function createGameField(cards, matches, players, rounds, filter, action, level) {
+
+    gRules.filter = filter;
+    gRules.action = action;
+    gRules.level = level;
 
     gMatches["total"] = parseInt(matches);
 
@@ -388,6 +443,14 @@ async function createGameField(cards, matches, players, rounds) {
     await loadModule({"module" : "newgame"});
 
     updateGameInfo();
+
+    creatingPokeCards(cards);
+
+    if (Object.keys(players).length > 1)
+        gameTimer(60, "#counter span");
+}
+
+function creatingPokeCards(cards) {
 
     var rowCount = {
         "row": 1,
@@ -417,21 +480,54 @@ async function createGameField(cards, matches, players, rounds) {
         document.querySelector(".game-container .row-cards").insertAdjacentHTML("beforeend", cardEle);
 
     });
-
-    if (Object.keys(players).length > 1)
-        gameTimer();
 }
 
-function gameTimer() {
+function loadNewRound() {
+
+    var json_params = {
+        playerNumber: Object.keys(gPlayers).length,
+        gameRounds: gRounds.total,
+        gameMatches: gMatches.total,
+        filter: gRules.filter,
+        gameLevel: gRules.level,
+        players: gPlayers,
+        action: gRules.action
+    }
+
+    axios.post("/loadRound", json_params).then((res) => {
+        res = res.data;
+        if (res != false) {
+            document.querySelector(".game-container .row-cards").innerHTML = "";
+            document.querySelector(".end-game").classList.toggle("d-none");
+            gMatches.found = 0;
+            creatingPokeCards(res.args[0]);
+            updateGameInfo();
+        }
+    }).catch((err) => {
+        createErrorMg(err.response.data.message);
+    });
+
+}
+
+function gameTimer(timer, parent, afterfuntion = "updateGameInfo") {
     var top = 0;
     const timeCounter = setInterval(() => {
         if (timer === top) {
             clearInterval(timeCounter);
-            updateGameInfo();
-            timer = 60;
-            gameTimer();
+
+            switch (afterfuntion) {
+                case "updateGameInfo":
+                    updateGameInfo();
+                    break;
+                case "loadNewRound":
+                    loadNewRound();
+                    break;
+                default:
+                    gameTimer();
+                    break;
+            }
         } else {
-            document.querySelector("#counter span").innerText = ( (timer - 1).toString().length == 1 ) ? "00:0" + (timer -= 1) : "00:" + (timer -= 1);
+            document.querySelector(parent).innerText = ( (timer - 1).toString().length == 1 ) ? "00:0" + (timer -= 1) : "00:" + (timer -= 1);
         }
     }, 1000);
 }

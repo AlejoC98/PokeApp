@@ -152,7 +152,6 @@ app.post('/loadRound', async (req, res) => {
 
             cards = cards.concat([element]);
             matches.push(element.id);
-            console.log(cards);
         }
     }).catch((err) => {
         res.status(300).send(err);
@@ -162,13 +161,13 @@ app.post('/loadRound', async (req, res) => {
         players[player] = {
             "name" : req.body.players[player],
             "color" : "",
-            "matches": 1
+            "matches": 0
         }
     });
 
     res.send({
         func: "createGameField",
-        args: [cards, req.body.gameMatches, players, req.body.gameRounds]
+        args: [cards, req.body.gameMatches, players, req.body.gameRounds, req.body.filter, req.body.action, req.body.gameLevel]
     });
 
 });

@@ -11634,7 +11634,7 @@ main {
   position: absolute;
   max-width: 400px;
   right: 10px;
-  z-index: 1000;
+  z-index: 1000000;
 }
 
 .auth-container {
@@ -12072,6 +12072,17 @@ input.num {
     top: -30%;
     left: 130%;
     transition-property: left, top, opacity;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .col.logo-col {
+    margin: 10px;
+  }
+  .col.logo-col img {
+    width: 700px;
+  }
+  .row.login-row {
+    margin: 10px 0;
   }
 }
 
