@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../components/global/headers') %>
-    <title>Poke Login</title>
-</head>
-<body>
-    <main class="container-fluid auth-container">
-        <div class="row">
-            <div class="col logo-col">
-                <img class="animate__animated animate__bounce" src="/img/logo.png" width="800" alt="">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <%- include('../components/global/headers') %>
+        <title>Poke Login</title>
+    </head>
+    <body>
+        <main class="container-fluid auth-container">
+            <div class="row">
+                <div class="col logo-col">
+                    <img class="animate__animated animate__bounce" src="/img/logo.png" width="800" alt="">
+                </div>
             </div>
-        </div>
-        <div class="row auth-row">
-            <div class="col animate__animated animate__fadeIn animate__delay-1s">
-                <%- include(content) %>
+            <div class="row auth-row">
+                <div class="col animate__animated animate__fadeIn animate__delay-1s">
+                    <%- include(content) %>
+                </div>
             </div>
-        </div>
-    </main>
-    <%- include('../components/global/loadingPage') %>
-</body>
+        </main>
+        <%- include('../components/global/loadingPage') %>
+    </body>
 </html>

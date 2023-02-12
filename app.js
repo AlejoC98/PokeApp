@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.get("/Register", (req, res) => {
 
-    var response = "../components/modules/registerFrom";
+    var response = "../components/modules/registerForm";
 
     console.log(response);
 
