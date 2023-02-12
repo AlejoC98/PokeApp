@@ -44,22 +44,21 @@ function createErrorMg(mg, color = "warning", time = 5000) {
     }, time);
 }
 
-async function openMenu() {
+async function openMenu(eleID = {}) {
     event.preventDefault();
 
+    (typeof eleID === "string") ? eleID : eleID = this.id;
+
     var json_params = {
-        "module": this.id
+        "module": eleID
     };
 
     if (document.querySelector("li.active"))
         document.querySelector("li.active").classList.toggle("active");
 
-    this.classList.toggle("active");
+    document.getElementById(eleID).classList.toggle("active");
 
-    // loadModule(json_params, this.id);
     loadModule(json_params);
-
-
 }
 
 async function loadModule(json_params = {}) {
@@ -76,7 +75,7 @@ async function loadModule(json_params = {}) {
         document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
 
         switch (json_params.module) {
-            case "home":
+            case "game":
                 break;
             case "sets":
                 // Loading pokedata
@@ -408,7 +407,7 @@ function updateGameInfo() {
             gameTimer(5, "#newRoundCounter", "loadNewRound");
 
         document.querySelector(".end-game").classList.toggle("d-none");
-    } else {
+    } else if (Object.keys(gPlayers).length <= 1) {
         document.querySelector("#counter span").innerHTML = "&infin;";
     }
 }
@@ -466,7 +465,7 @@ function creatingPokeCards(cards) {
             document.querySelector(".game-container").appendChild(newRow);
         }
 
-        var cardEle = '<div class="pokecard flip-card" onclick="flipCard()" id="'+ card.id +'">' +
+        var cardEle = '<div class="pokecard flip-card animate__animated animate__fadeInDown" onclick="flipCard()" id="'+ card.id +'">' +
             '<div class="flip-card-inner">' +
                 '<div class="flip-card-front">' +
                     '<img src="/img/pokecard-backside.png" width="100" alts=""></img>' +

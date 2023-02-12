@@ -1,0 +1,90 @@
+<h3 class="register-error"></h3>
+<form action="/" onsubmit="handleSubmit()" method="POST" id="registerForm">
+  <div class="container-fluid register-container">
+    <div class="row">
+      <div class="col">
+        <h2 class="text-white text-center">Register</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="username" class="text-white">Fisrt Name</label>
+        <input
+          type="text"
+          name="firstname"
+          id="firstname"
+          class="form-control"
+          placeholder="..."
+          required
+        />
+      </div>
+      <div class="col">
+        <label for="username" class="text-white">Last Name</label>
+        <input
+          type="text"
+          name="lastname"
+          id="lastname"
+          class="form-control"
+          placeholder="..."
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="username" class="text-white">Username</label>
+        <input
+          type="email"
+          name="username"
+          id="username"
+          class="form-control"
+          placeholder="example@something.com"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="password" class="text-white">Image Profile</label>
+        <input
+          type="file"
+          name="img_profile"
+          id="img_profile"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="password" class="text-white">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="******"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-end">
+        <a href="#" class="text-white">Forgot password?</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="btn">
+          Login
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <a href="/Register" class="text-white">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</form>

@@ -14,6 +14,31 @@ const AuthLogin = async (email, password) => {
     });
 }
 
+const AutheCheck = async (req, res, next) => {
+    
+    var status = true;
+
+    switch (req.path) {
+        case "/Dashboard":
+        case "/module":
+            if (!req.session.user) {
+                res.redirect("/");
+                status = false;
+            }
+            break;
+        case "/":
+        case "/Register":
+            if (req.session.user) {
+                res.redirect("/Dashboard");
+                status = false;
+            }
+            break;
+    }
+
+    if (status === true)
+        next();
+}
+
 // const getUserData = (user) => {
 //     onAuthStateChanged(auth, (user) => {
 //         if (user) {
@@ -28,4 +53,4 @@ const AuthLogin = async (email, password) => {
 //       });
 // }
 
-export { AuthLogin }
+export { AuthLogin, AutheCheck }

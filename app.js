@@ -2,7 +2,7 @@
 import express from 'express';
 const app = express();
 const port = 3000;
-import { AuthLogin } from './context/AuthFirebase.js';
+import { AuthLogin, AutheCheck } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
@@ -13,38 +13,44 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Static files
+app.use(session({
+    secret: "aEsfjZehIdPlcrhLCV1E5Znmbd9VU4Zx",
+    cookie: {
+        sameSite: "strict",
+        path: "/"
+    },
+    saveUninitialized: true,
+    resave: true
+}));
 app.use(express.static('public'));
-
 app.use('/css', express.static(path.join(__dirname, 'node_modules/animate.css')));
-
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/axios/dist')));
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(AutheCheck);
 
 // Set Views
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
-app.use(session({
-    secret: "aEsfjZehIdPlcrhLCV1E5Znmbd9VU4Zx",
-    cookie: {
-        sameSite: "strict",
-    },
-    saveUninitialized: false,
-    resave: true
-}));
-
 // Views
 app.get("/", (req, res) => {
 
-    if (req.session.authenticated == true) {
-        res.render('index');
-    } else {
-        res.render('login');
-    }
+    var response = "../components/modules/loginForm";
 
+    console.log(response);
+
+    res.render('auth', {content : response});
+});
+
+app.get("/Register", (req, res) => {
+
+    var response = "../components/modules/registerFrom";
+
+    console.log(response);
+
+    res.render('auth', {content : response});
 });
 
 app.post("/authentication", (req, res, next) => {
@@ -107,11 +113,9 @@ app.post("/modules", (req, res) => {
 
     if (module != "")
         res.render(module);
-
 });
 
 app.post("/pokeload", async (req, res) => {
-
 
     var response = await getPokeCards(req);
 
@@ -121,12 +125,7 @@ app.post("/pokeload", async (req, res) => {
 });
 
 app.get('/Dashboard', (req, res) => {
-    res.render('index', {currentUser: "Parce"});
-    // if (req.session.authenticated == true) {
-    //     res.render('index', {currentUser: req.session.user.username});
-    // } else {
-    //     res.render('login');
-    // }
+    res.render('index', {currentUser: "Alejo"});
 });
 
 app.post('/loadRound', async (req, res) => {
@@ -170,6 +169,13 @@ app.post('/loadRound', async (req, res) => {
         args: [cards, req.body.gameMatches, players, req.body.gameRounds, req.body.filter, req.body.action, req.body.gameLevel]
     });
 
+});
+
+app.get("/logout", (req, res) => {
+    if (req.session) {
+        req.session.destroy();
+        res.redirect("/");
+    }
 });
 
 // Listen to port

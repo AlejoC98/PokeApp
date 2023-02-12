@@ -4,7 +4,7 @@
  * Copyright 2011-2022 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+NKo&display=swap");
 :root,
 [data-bs-theme=light] {
   --bs-blue: #0d6efd;
@@ -11613,11 +11613,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Noto Sans NKo", sans-serif;
   scroll-behavior: smooth;
 }
 
-.auth-container .login-row .login-container button {
+.auth-container .auth-row .login-container button, .auth-container .auth-row .register-container button {
   background: #db3a34;
   border: #db3a34;
   color: #ffffff;
@@ -11651,24 +11651,24 @@ main {
 .auth-container .logo-col {
   margin-top: 50px;
 }
-.auth-container .login-row {
+.auth-container .auth-row {
   margin-top: 100px;
 }
-.auth-container .login-row .login-container {
+.auth-container .auth-row .login-container, .auth-container .auth-row .register-container {
   min-width: 500px;
   padding: 15px;
   background: #ffc857;
   border-radius: 10px;
   -webkit-backdrop-filter: blur(10px);
 }
-.auth-container .login-row .login-container .row {
+.auth-container .auth-row .login-container .row, .auth-container .auth-row .register-container .row {
   margin-bottom: 15px;
 }
-.auth-container .login-row .login-container label {
+.auth-container .auth-row .login-container label, .auth-container .auth-row .register-container label {
   margin-bottom: 10px;
   font-size: 1.2em;
 }
-.auth-container .login-row .login-container button {
+.auth-container .auth-row .login-container button, .auth-container .auth-row .register-container button {
   font-weight: bold;
   width: 100%;
   font-size: 1.3em;
@@ -11711,7 +11711,7 @@ main {
   left: 2.5em;
   margin: 0;
   padding: 0;
-  background: #333333;
+  background: #000000;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -11728,6 +11728,7 @@ main {
 }
 .side-nav ul li a {
   min-width: 27px;
+  max-width: 27px;
   text-align: center;
 }
 .side-nav ul li:not(.active) {
@@ -11740,7 +11741,7 @@ main {
   margin: 0 10px;
 }
 .side-nav ul li.active a.text-white {
-  color: #333333 !important;
+  color: #000000 !important;
   cursor: auto;
 }
 .side-nav ul li.active a.text-white i {
@@ -11762,10 +11763,10 @@ main {
   width: 20px;
   height: 20px;
   display: flex;
-  background: #333333;
+  background: #000000;
   position: absolute;
   top: -0.82em;
-  left: 2.38em;
+  left: 2.39em;
   border-radius: 0 0 10px 0;
 }
 .side-nav ul li.active::before {
@@ -11783,7 +11784,7 @@ main {
   width: 20px;
   height: 20px;
   display: flex;
-  background: #333333;
+  background: #000000;
   position: relative;
   top: 2.13em;
   left: 0;
@@ -11796,42 +11797,46 @@ main {
   left: 180px;
   width: 100%;
 }
-.main-container header {
-  padding-top: 20px;
-  width: 100%;
+.main-container .navbar-theme {
+  background: transparent;
+}
+.main-container .navbar-theme form input {
+  padding: 0.7em 0 0.7em 2em;
+  border: 0;
+  background: #f7f7f7;
+  width: 20vw;
+}
+.main-container .navbar-theme form span {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 40px;
 }
-.main-container header .d-search {
-  position: relative;
-}
-.main-container header .d-search i {
+.main-container .navbar-theme form span::before {
+  content: "\f002";
+  font-family: "FontAwesome";
+  font-size: 1.2em;
   position: absolute;
-  top: 8px;
-  left: 10px;
-  font-size: 1.5em;
-}
-.main-container header .d-search input {
-  padding: 7px 10px 7px 42px;
-  background: #F8F8F8;
-  border: none;
-}
-.main-container header ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  width: 20px;
+  height: 20px;
+  color: #000;
+  justify-content: center;
+  align-items: center;
   display: flex;
-  justify-content: space-around;
-  width: 400px;
+  left: 1em;
 }
-.main-container header ul li a {
-  text-decoration: none;
+.main-container .navbar-theme ul.navbar-nav {
+  display: flex;
+  align-items: center;
 }
-.main-container header ul li a i {
-  color: #000000;
-  font-size: 1.5em;
+.main-container .navbar-theme ul.navbar-nav li {
+  margin: 0 0.5em;
+  font-size: 1.2em;
+}
+.main-container .navbar-theme ul.navbar-nav .dropdown .nav-link.dropdown-toggle::after {
+  all: unset;
+}
+.main-container .navbar-theme ul.navbar-nav .dropdown img {
+  border-radius: 50%;
+  height: 40px;
 }
 
 .d-content {

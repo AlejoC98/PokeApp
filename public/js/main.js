@@ -80,11 +80,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     // Add event for menu items
     if (document.getElementById("side-nav")){
-        document.querySelectorAll("#side-nav li").forEach((ele, ind) => {
+        document.querySelectorAll("#side-nav li:has(a)").forEach((ele, ind) => {
             ele.addEventListener("click", openMenu);
         });
     }
 
+    // Open default module
+    if (document.getElementById("side-nav") != null)
+        openMenu("home");
     
     document.addEventListener("scroll", (pos) => {
         if (document.querySelectorAll(".breadcrumb").length > 0)
