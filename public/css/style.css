@@ -12,7 +12,7 @@
   --bs-purple: #6f42c1;
   --bs-pink: #d63384;
   --bs-red: #dc3545;
-  --bs-orange: #fd7e14;
+  --bs-orange: #f26419;
   --bs-yellow: #ffc107;
   --bs-green: #198754;
   --bs-teal: #20c997;
@@ -11617,15 +11617,6 @@ body {
   scroll-behavior: smooth;
 }
 
-.auth-container .auth-row .login-container button, .auth-container .auth-row .register-container button {
-  background: #db3a34;
-  border: #db3a34;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 main {
   position: relative;
 }
@@ -11638,44 +11629,29 @@ main {
 }
 
 .auth-container {
-  background: #084C61;
-  background-image: url(../img/bg-pokeapp.png);
-  background-position: center;
-  display: flex;
-  width: 100%;
+  background-image: url(../img/8PynAH.jpg);
+  background-size: cover;
+}
+.auth-container .row-form {
   min-height: 100vh;
-  flex-direction: column;
+}
+.auth-container .row-form .col-left {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
-.auth-container .logo-col {
-  margin-top: 50px;
-}
-.auth-container .auth-row {
-  margin-bottom: 50px;
-}
-.auth-container .auth-row .login-container, .auth-container .auth-row .register-container {
-  min-width: 500px;
-  padding: 15px;
-  background: #ffc857;
+.auth-container .row-form .col-left form {
   border-radius: 10px;
-  -webkit-backdrop-filter: blur(10px);
-}
-.auth-container .auth-row .login-container .row, .auth-container .auth-row .register-container .row {
-  margin-bottom: 15px;
-}
-.auth-container .auth-row .login-container label, .auth-container .auth-row .register-container label {
-  margin-bottom: 10px;
-  font-size: 1.2em;
-}
-.auth-container .auth-row .login-container button, .auth-container .auth-row .register-container button {
-  font-weight: bold;
+  padding: 20px;
   width: 100%;
-  font-size: 1.3em;
 }
-
-.login-error {
-  position: absolute;
-  color: #db3a34;
+.auth-container .row-form .col-left form .auth-form {
+  background-color: #bbb;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: initial;
+}
+.auth-container .row-form .col-left form .row {
+  margin: 15px 0;
 }
 
 .dashboard-container {
@@ -11850,6 +11826,7 @@ main {
 
 .modal-content {
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: initial;
 }
 .modal-content .modal-body .row {
   margin: 20px auto;
@@ -12012,7 +11989,8 @@ input.num {
   background: RGBA(51, 51, 51, 0.62);
   z-index: 100000;
   left: 0;
-  webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: initial;
   transition: 1S all;
 }
 .end-game .row {
@@ -12040,7 +12018,8 @@ input.num {
   right: 4px;
   border-radius: 5px;
   overflow: hidden;
-  webkit-backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: initial;
 }
 
 .matched-card:after {

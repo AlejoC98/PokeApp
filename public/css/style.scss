@@ -3,6 +3,7 @@ $danger: #db3a34;
 $warning: #ffc857;
 $success: #177e89;
 $secondary: #323031;
+$orange: #f26419;
 $modal-content-bg: rgba(51, 51, 51, 0.6);
 $modal-content-color: #ffffff;
 $modal-content-border: 0;
@@ -46,55 +47,36 @@ main {
     z-index: 1000000;
 }
 
+// Auth Page styles
+
 .auth-container {
-    background: $primary;
-    background-image: url(../img/bg-pokeapp.png);
-    background-position: center;
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    flex-direction: column;
-    align-items: center;
-
-    // overflow: hidden;
-
-    .logo-col {
-        margin-top: 50px;
-    }
-
-    .auth-row {
-        margin-bottom: 50px;
-        .login-container, .register-container {
-            min-width: 500px;
-            padding: 15px;
-            // background: RGBA(255,200,87,0.6);
-            background: $warning;
-            border-radius: 10px;
-            -webkit-backdrop-filter: blur(10px);
-
-            .row {
-                margin-bottom: 15px;
-            }
-
-            label {
-                margin-bottom: 10px;
-                font-size: 1.2em;
-            }
-
-            button {
-                @extend %btn-login;
-                font-weight: bold;
+    background-image: url(../img/8PynAH.jpg);
+    background-size: cover;
+     .row-form {
+        min-height: 100vh;
+        .col-left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // background-image: url(../img/poke_wallpaper_dark_blue.png);
+            // opacity: 60%;
+            form {
+                border-radius: 10px;
+                padding: 20px;
                 width: 100%;
-                font-size: 1.3em;
+                .auth-form {
+                    background-color: #bbb;
+                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter:initial;
+                }
+                .row {
+                    margin: 15px 0;
+                }
             }
         }
     }
 }
 
-.login-error {
-    position: absolute;
-    color: $danger;
-}
 
 .dashboard-container {
     background: #ffffff;
@@ -296,6 +278,7 @@ main {
 
 .modal-content {
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter:initial;
 
     .modal-body {
         .row {
@@ -489,7 +472,8 @@ input.num {
     background: RGBA(51,51,51,0.62);
     z-index: 100000;
     left: 0;
-    webkit-backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter:initial;
     transition: 1S all;
 
     .row {
@@ -519,7 +503,8 @@ input.num {
     right: 4px;
     border-radius: 5px;
     overflow: hidden;
-    webkit-backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter:initial;
 }
 
 // Reflection effect

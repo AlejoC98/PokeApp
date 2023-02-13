@@ -9,14 +9,44 @@
     </head>
     <body>
         <main class="container-fluid auth-container">
-            <div class="row">
-                <div class="col logo-col">
-                    <img class="animate__animated animate__bounce" src="/img/logo.png" width="800" alt="">
-                </div>
-            </div>
-            <div class="row auth-row">
-                <div class="col animate__animated animate__fadeIn animate__delay-1s">
-                    <%- include(content) %>
+            <div class="row row-form">
+                <div class="col-5 col-left">
+                    <form action="">
+                        <div class="container auth-form">
+                            <div class="row logo">
+                                <div class="col">
+                                    <img src="/img/logo.png" width="400" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="" class="text-white">Email</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="" class="text-white">Password</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-end">
+                                    <a href="" class="text-white">Forgot Password?</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-grid gap-2">
+                                    <button class="btn btn-warning text-white">Login</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <a href="" class="text-white">Sign Up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
