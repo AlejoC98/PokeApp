@@ -5,49 +5,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <%- include('../components/global/headers') %>
-        <title>Poke Login</title>
+        <title>PokeMatch</title>
     </head>
     <body>
+        <div class="auth-background"></div>
         <main class="container-fluid auth-container">
             <div class="row row-form">
-                <div class="col-5 col-left">
-                    <form action="">
-                        <div class="container auth-form">
-                            <div class="row logo">
-                                <div class="col">
-                                    <img src="/img/logo.png" width="400" alt="">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="" class="text-white">Email</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="" class="text-white">Password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col text-end">
-                                    <a href="" class="text-white">Forgot Password?</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-grid gap-2">
-                                    <button class="btn btn-warning text-white">Login</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col text-center">
-                                    <a href="" class="text-white">Sign Up</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 col-left">
+                    <%- include(content) %>
                 </div>
+                <div class="col-7"></div>
             </div>
         </main>
         <%- include('../components/global/loadingPage') %>

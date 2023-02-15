@@ -32,6 +32,12 @@ function handleSubmit() {
         case "loginForm":
             json_url = "/authentication";
             break;
+        case "registerForm":
+            json_url = "/Register";
+            json_params = new FormData();
+            var img = document.getElementById("registerForm").querySelector("input[type=file]");
+            json_params.append("image", "Pruerbas");
+            break;
         case "gameRulesForm":
             json_url = "/loadRound";
 
@@ -55,7 +61,7 @@ function handleSubmit() {
             break;
     }
     // checking if there's parameters inside json_params
-    if (Object.keys(json_params).length > 0)
+    if (Object.keys(json_params).length > 0 || json_params.entries().next().value.length > 0)
         axios.post(json_url, json_params).then((res) => {
             res = res.data;
             if ("url" in res)
@@ -87,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Open default module
     if (document.getElementById("side-nav") != null)
-        openMenu("home");
+        openMenu("game");
     
     document.addEventListener("scroll", (pos) => {
         if (document.querySelectorAll(".breadcrumb").length > 0)

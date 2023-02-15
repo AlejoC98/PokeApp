@@ -1,88 +1,84 @@
-<h3 class="register-error"></h3>
-<form action="/" onsubmit="handleSubmit()" method="POST" id="registerForm">
-  <div class="container-fluid register-container">
-    <div class="row">
-      <div class="col">
-        <h2 class="text-white text-center">Register</h2>
+<form action="/Register" method="POST" onsubmit="handleSubmit()" class="animate__animated animate__flipInX" id="registerForm">
+  <div class="container auth-form">
+      <div class="row mb-2 logo">
+          <div class="col">
+              <img src="/img/logo.png" width="400" alt="">
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="username" class="text-white">Fisrt Name</label>
-        <input
-          type="text"
-          name="firstname"
-          id="firstname"
-          class="form-control"
-          placeholder="..."
-          required
-        />
+      <div class="row mb-3">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <label for="firstname" class="text-white">Firstname *</label>
+              <input 
+                type="text" 
+                name="firstname" 
+                id="firstname" 
+                class="form-control" 
+                placeholder="..." 
+                required
+              >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <label for="lastname" class="text-white">Lastname *</label>
+            <input 
+              type="text" 
+              name="lastname" 
+              id="lastname" 
+              class="form-control" 
+              placeholder="..." 
+              required
+            >
+        </div>
       </div>
-      <div class="col">
-        <label for="username" class="text-white">Last Name</label>
-        <input
-          type="text"
-          name="lastname"
-          id="lastname"
-          class="form-control"
-          placeholder="..."
-          required
-        />
+      <div class="row mb-3">
+        <div class="col">
+          <label for="email" class="text-white">Email *</label>
+          <input 
+            type="email" 
+            name="email" 
+            id="email" 
+            class="form-control" 
+            placeholder="example@something.com" 
+            requried
+          >
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="username" class="text-white">Username</label>
-        <input
-          type="email"
-          name="username"
-          id="username"
-          class="form-control"
-          placeholder="example@something.com"
-          required
-        />
+      <div class="row mb-3">
+        <div class="col">
+          <label for="password" class="text-white">Password *</label>
+          <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            class="form-control" 
+            placeholder="******" 
+            required
+          >
+        </div>
       </div>
-      <div class="col">
-        <label for="password" class="text-white">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          class="form-control"
-          placeholder="******"
-          required
-        />
+      <div class="row mb-3">
+        <div class="col d-grid gap-2">
+          <label for="profile_img" class="btn btn-warning text-white">
+            Image Profile
+            <i class="fa-solid fa-upload"></i>
+          </label>
+          <input 
+            type="file" 
+            name="profile_img" 
+            id="profile_img" 
+            class="form-control" 
+            hidden
+          >
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="password" class="text-white">Image Profile</label>
-        <input
-          type="file"
-          name="img_profile"
-          id="img_profile"
-          class="form-control"
-          required
-        />
+      <div class="row mb-3">
+          <div class="col d-grid gap-2">
+              <button type="submit" class="btn btn-info text-white">Sign Up</button>
+          </div>
       </div>
-    </div>
-    <!-- <div class="row">
-      <div class="col text-end">
-        <a href="#" class="text-white">Forgot password?</a>
+      <div class="row mb-3">
+          <div class="col text-center">
+              <a href="/" class="text-white">Log In</a>
+          </div>
       </div>
-    </div> -->
-    <div class="row">
-      <div class="col">
-        <button class="btn">
-          Login
-          <i class="fa-solid fa-right-to-bracket"></i>
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col text-center">
-        <a href="/Register" class="text-white">Sign Up</a>
-      </div>
-    </div>
   </div>
 </form>

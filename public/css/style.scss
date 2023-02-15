@@ -3,7 +3,7 @@ $danger: #db3a34;
 $warning: #ffc857;
 $success: #177e89;
 $secondary: #323031;
-$orange: #f26419;
+$info: #f26419;
 $modal-content-bg: rgba(51, 51, 51, 0.6);
 $modal-content-color: #ffffff;
 $modal-content-border: 0;
@@ -48,35 +48,50 @@ main {
 }
 
 // Auth Page styles
-
-.auth-container {
+.auth-background {
     background-image: url(../img/8PynAH.jpg);
+    background-size: 100%;
+    // filter: blur(3px);
     background-size: cover;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+.auth-container {
+    overflow: hidden;
+    min-height: 100vh;
      .row-form {
-        min-height: 100vh;
         .col-left {
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            // background-image: url(../img/poke_wallpaper_dark_blue.png);
-            // opacity: 60%;
+            position: relative;
             form {
-                border-radius: 10px;
+                position: absolute;
                 padding: 20px;
-                width: 100%;
+                width: 80%;
                 .auth-form {
-                    background-color: #bbb;
-                    -webkit-backdrop-filter: blur(10px);
-                    backdrop-filter:initial;
-                }
-                .row {
-                    margin: 15px 0;
+                    border-radius: 10px;
+                    padding: 30px;
+                    background: RGBA(23,126,137,0.47);
+                    .logo .col {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        img {
+                            width: 100%;
+                            max-width: 400px;
+                        }
+                    }
                 }
             }
         }
     }
 }
-
 
 .dashboard-container {
     background: #ffffff;
@@ -534,7 +549,6 @@ input.num {
     opacity: 0;
 }
 
-
 // Animations
 @keyframes shine{
     10% {
@@ -557,13 +571,6 @@ input.num {
 // Media queries
 
 @media screen and (max-width: 1200px) {
-    .col.logo-col {
-        margin: 10px;
-        img {
-            width: 700px;
-        }
-    }
-
     .row.login-row {
         margin: 10px 0;
     }

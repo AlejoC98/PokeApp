@@ -39,7 +39,8 @@ function createErrorMg(mg, color = "warning", time = 5000) {
         document.querySelector(".alert").classList.remove("animate__fadeInRightBig");
         document.querySelector(".alert").classList.add("animate__fadeOutRight");
         setTimeout(() => {
-            document.querySelector(".alert").remove();
+            if (document.querySelector(".alert") != null)
+                document.querySelector(".alert").remove();
         }, 1000);
     }, time);
 }
@@ -75,8 +76,6 @@ async function loadModule(json_params = {}) {
         document.querySelector(".d-content").insertAdjacentHTML("beforeend", res);
 
         switch (json_params.module) {
-            case "game":
-                break;
             case "sets":
                 // Loading pokedata
                 loadCards({"action" : "sets"}, "createSetTable");

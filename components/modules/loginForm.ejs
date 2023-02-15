@@ -1,54 +1,36 @@
-<h3 class="login-error"></h3>
-<form action="/" onsubmit="handleSubmit()" method="POST" id="loginForm">
-  <div class="container-fluid login-container">
-    <div class="row">
-      <div class="col">
-        <h2 class="text-white text-center">Login</h2>
+<form action="/authentication" method="POST" onsubmit="handleSubmit()" class="animate__animated animate__flipInX" id="loginForm">
+  <div class="container auth-form">
+      <div class="row mb-2 logo">
+          <div class="col">
+              <img src="/img/logo.png" alt="">
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="username" class="text-white">Username</label>
-        <input
-          type="email"
-          name="username"
-          id="username"
-          class="form-control"
-          placeholder="example@something.com"
-          required
-        />
+      <div class="row mb-3">
+          <div class="col">
+              <label for="email" class="text-white">Email</label>
+              <input type="text" name="email" id="email" class="form-control" placeholder="example@something.com" required>
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="password" class="text-white">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          class="form-control"
-          placeholder="******"
-          required
-        />
+      <div class="row mb-3">
+          <div class="col">
+              <label for="password" class="text-white">Password</label>
+              <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col text-end">
-        <a href="#" class="text-white">Forgot password?</a>
+      <div class="row mb-3">
+          <div class="col text-end">
+              <a href="/Forgot%Password" class="text-white">Forgot Password?</a>
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button class="btn">
-          Login
-          <i class="fa-solid fa-right-to-bracket"></i>
-        </button>
+      <div class="row mb-3">
+          <div class="col d-grid gap-2">
+              <button type="submit" class="btn btn-warning text-white">Login</button>
+          </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col text-center">
-        <a href="/Register" class="text-white">Sign Up</a>
+      <div class="row mb-3">
+          <div class="col text-center">
+              <a href="/SignUp" class="text-white">Sign Up</a>
+          </div>
       </div>
-    </div>
   </div>
 </form>

@@ -2,11 +2,12 @@
 import express from 'express';
 const app = express();
 const port = 3000;
-import { AuthLogin, AutheCheck } from './context/AuthFirebase.js';
+import { AuthLogin, AutheCheck, CreateNewUser, getUserData } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { getPokeCards } from './context/AuthPoke.js';
+import { Console } from 'console';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -39,12 +40,10 @@ app.get("/", (req, res) => {
 
     var response = "../components/modules/loginForm";
 
-    console.log(response);
-
     res.render('auth', {content : response});
 });
 
-app.get("/Register", (req, res) => {
+app.get("/SignUp", (req, res) => {
 
     var response = "../components/modules/registerForm";
 
@@ -53,15 +52,16 @@ app.get("/Register", (req, res) => {
     res.render('auth', {content : response});
 });
 
-app.post("/authentication", (req, res, next) => {
-    const {username, password} = req.body;
+app.post("/authentication", (req, res) => {
+    const {email, password} = req.body;
 
     let response = {};
 
-    AuthLogin(username, password).then((result) => {
+    AuthLogin(email, password).then((result) => {
+        console.log(result.uid);
         req.session.authenticated = true;
         req.session.user = {
-            username
+            uid: result.uid
         }
         response["url"] = '/Dashboard';
         res.send(response);
@@ -76,6 +76,30 @@ app.post("/authentication", (req, res, next) => {
             message: err.message
         });
     });
+});
+
+app.post("/Register", async (req, res) => {
+
+    const {firstname, lastname, email, password} = req.body;
+    // const email = req.body.email;
+
+    console.log(req.files);
+    console.log(req.body);
+
+    // await CreateNewUser(email, password, firstname, lastname).then((result) => {
+    //     console.log(result, "Resultado");
+    //     res.send(true);
+    // }).catch((err) => {
+    //     // err.message = err.message.replace(/[^\w\s]/gi, " ");
+    //     err.message = err.message.split("/");
+    //     err.message = err.message[1].replace(/-/g, " ");
+
+    //     err.message = err.message.charAt(0).toUpperCase() + err.message.slice(1);;
+
+    //     res.status(401).json({
+    //         message: err.message
+    //     });
+    // });
 });
 
 app.post("/forms", (req, res) => {
@@ -97,7 +121,7 @@ app.post("/modules", (req, res) => {
     const opt = req.body.module;
 
     switch (opt) {
-        case "home":
+        case "game":
             module = "../components/modules/newGameModule";
             break;
         case "sets":
@@ -124,8 +148,18 @@ app.post("/pokeload", async (req, res) => {
     });
 });
 
-app.get('/Dashboard', (req, res) => {
-    res.render('index', {currentUser: "Alejo"});
+app.get('/Dashboard', async (req, res) => {
+    let userData = {};
+    await getUserData().then((res) => {
+        userData = {
+            "firstname" : res.displayName.split(" ")[0],
+            "lastname" : res.displayName.split(" ")[1],
+            "email" : res.email,
+            "profile": res.photoURL
+        }
+    });
+    
+    res.render('index', {currentUser: userData});
 });
 
 app.post('/loadRound', async (req, res) => {
