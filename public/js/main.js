@@ -34,9 +34,7 @@ function handleSubmit() {
             break;
         case "registerForm":
             json_url = "/Register";
-            json_params = new FormData();
-            var img = document.getElementById("registerForm").querySelector("input[type=file]");
-            json_params.append("image", "Pruerbas");
+            json_params = new FormData(document.getElementById("registerForm"));
             break;
         case "gameRulesForm":
             json_url = "/loadRound";

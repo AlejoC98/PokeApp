@@ -7,11 +7,15 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { getPokeCards } from './context/AuthPoke.js';
-import { Console } from 'console';
+import multer from 'multer';
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
+
+// Setting the multer to save files
+// const upload = multer({dest: "./public/uploads/"});
+const upload = multer({storage: multer.memoryStorage()});
 
 // Static files
 app.use(session({
@@ -23,6 +27,7 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
 app.use(express.static('public'));
 app.use('/css', express.static(path.join(__dirname, 'node_modules/animate.css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
@@ -46,8 +51,6 @@ app.get("/", (req, res) => {
 app.get("/SignUp", (req, res) => {
 
     var response = "../components/modules/registerForm";
-
-    console.log(response);
 
     res.render('auth', {content : response});
 });
@@ -78,28 +81,35 @@ app.post("/authentication", (req, res) => {
     });
 });
 
-app.post("/Register", async (req, res) => {
+app.post("/Register", upload.single("profile_img"), async (req, res) => {
 
     const {firstname, lastname, email, password} = req.body;
-    // const email = req.body.email;
 
-    console.log(req.files);
-    console.log(req.body);
+    await CreateNewUser(email, password, firstname, lastname, req.file).then(async(result) => {
+        req.session.authenticated = true;
+        req.session.user = {
+            uid: result.uid
+        }
+        res.send({url: "/Dashboard"});
+    }).catch((err) => {
+        // err.message = err.message.replace(/[^\w\s]/gi, " ");
+        console.log(err);
 
-    // await CreateNewUser(email, password, firstname, lastname).then((result) => {
-    //     console.log(result, "Resultado");
-    //     res.send(true);
-    // }).catch((err) => {
-    //     // err.message = err.message.replace(/[^\w\s]/gi, " ");
-    //     err.message = err.message.split("/");
-    //     err.message = err.message[1].replace(/-/g, " ");
+        try {
+            err.message = err.message.split("/");
+            err.message = err.message[1].replace(/-/g, " ");
+    
+            err.message = err.message.charAt(0).toUpperCase() + err.message.slice(1);
+            
+        } catch (error) {
+            err = err;
+        }
 
-    //     err.message = err.message.charAt(0).toUpperCase() + err.message.slice(1);;
 
-    //     res.status(401).json({
-    //         message: err.message
-    //     });
-    // });
+        res.status(401).json({
+            message: err.message
+        });
+    });
 });
 
 app.post("/forms", (req, res) => {
@@ -151,6 +161,7 @@ app.post("/pokeload", async (req, res) => {
 app.get('/Dashboard', async (req, res) => {
     let userData = {};
     await getUserData().then((res) => {
+        console.log(res);
         userData = {
             "firstname" : res.displayName.split(" ")[0],
             "lastname" : res.displayName.split(" ")[1],
