@@ -564,3 +564,7 @@ function fadeIn(el, time) {
 
     tick();
 }
+
+function loadSocialPopUp() {
+    console.log("PErro");
+}

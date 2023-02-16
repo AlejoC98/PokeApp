@@ -11670,6 +11670,15 @@ main {
   width: 100%;
   max-width: 400px;
 }
+.auth-container .row-form .col-left form .auth-form .social-login .col {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.auth-container .row-form .col-left form .auth-form .social-login .col a {
+  background: #ffffff;
+  border-radius: 50%;
+}
 
 .dashboard-container {
   background: #ffffff;
