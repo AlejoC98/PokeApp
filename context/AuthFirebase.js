@@ -2,7 +2,6 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfi
 import { auth, db, storage } from './../firebase.js';
 import { collection, addDoc, query, where, getDocs, doc } from "firebase/firestore";
 import { getDownloadURL, uploadBytesResumable, ref } from "firebase/storage";
-import { rename } from "fs";
 const AuthLogin = async (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -50,8 +49,11 @@ const CreateNewUser = async (email, password, fisrtname, lastname, profile_img) 
     
         if (profile_img != undefined) {
             const metadata = {
-                contentType: profile_img?.mimetype ?? ''
+                contentType: 'image/jpeg'
             };
+            // const metadata = {
+            //     contentType: profile_img?.mimetype ?? ''
+            // };
             
             var uniqueImgName = [fisrtname, lastname].join("_") + new Date();
 
