@@ -67,8 +67,6 @@ async function loadModule(json_params = {}) {
     // Cleaning container
     document.querySelector(".d-content").innerHTML = "";
 
-    let eleID = event.currentTarget.id;
-
     await axios.post("/modules", json_params).then((res) => {
         res = res.data;
 
@@ -81,7 +79,7 @@ async function loadModule(json_params = {}) {
                 loadCards({"action" : "sets"}, "createSetTable");
                 break;
             case "cardsSet":
-                loadCards({ "action" : "setCards", "filter" : eleID }, "createCardElement");
+                loadCards({ "action" : "setCards", "filter" : json_params.filter}, "createCardElement");
                 break;
         }
     }).catch((err) => {
@@ -110,7 +108,7 @@ function createSetTable(data) {
 
         document.querySelector("#setsTable tbody").insertAdjacentHTML("beforeend", tr_ele);
 
-        document.querySelector("#" + set.id).addEventListener("click", () => loadModule({ "module": "cardsSet", "filter": set.id }));
+        document.querySelector("#" + set.id).addEventListener("click", () => loadModule({ "module": "cardsSet", "filter": set.id, "setname" : set.name}));
 
     });
 }

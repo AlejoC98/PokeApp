@@ -129,6 +129,8 @@ app.post("/modules", (req, res) => {
 
     const opt = req.body.module;
 
+    let name = "";
+
     switch (opt) {
         case "game":
             module = "../components/modules/newGameModule";
@@ -138,6 +140,7 @@ app.post("/modules", (req, res) => {
             break;
         case "cardsSet":
             module = "../components/modules/setCardsModule";
+            name = req.body.setname;
             break;
         case "newgame":
             module = "../components/modules/gameField";
@@ -145,7 +148,7 @@ app.post("/modules", (req, res) => {
     }
 
     if (module != "")
-        res.render(module);
+        res.render(module, {name : name});
 });
 
 app.post("/pokeload", async (req, res) => {
@@ -153,7 +156,7 @@ app.post("/pokeload", async (req, res) => {
     var response = await getPokeCards(req);
 
     res.status(200).json({
-        content: response
+        content: response,
     });
 });
 

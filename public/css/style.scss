@@ -467,18 +467,24 @@ input.num {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                }
-    
-                /* Style the front side (fallback if image is missing) */
-                .flip-card-front {
-                    // background-color: #bbb;
-                    color: black;
 
                     img {
                         width: 16vw;
                         max-width: 100px;
                     }
+
                 }
+    
+                /* Style the front side (fallback if image is missing) */
+                // .flip-card-front {
+                //     // background-color: #bbb;
+                //     color: black;
+
+                //     img {
+                //         width: 16vw;
+                //         max-width: 100px;
+                //     }
+                // }
     
                 /* Style the back side */
                 .flip-card-back {

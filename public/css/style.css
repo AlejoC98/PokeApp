@@ -11999,10 +11999,7 @@ input.num {
   justify-content: center;
   align-items: center;
 }
-.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-front {
-  color: black;
-}
-.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-front img {
+.game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-front img, .game-container .row-cards .pokecard.flip-card .flip-card-inner .flip-card-back img {
   width: 16vw;
   max-width: 100px;
 }
