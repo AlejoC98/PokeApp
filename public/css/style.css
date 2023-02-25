@@ -12009,6 +12009,7 @@ input.num {
 }
 
 .end-game {
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12119,8 +12120,8 @@ input.num {
   }
   .sidebar {
     display: none;
-    z-index: 100000;
-    position: absolute;
+    z-index: 1000000;
+    position: fixed;
     right: 0;
     background: RGBA(0, 0, 0, 0.33);
     width: 100%;
@@ -12158,6 +12159,17 @@ input.num {
   }
   .field .row-cards {
     padding: 0;
+  }
+  .fixed-top {
+    left: 0;
+  }
+  .set-cards-content {
+    margin-top: 5em;
+  }
+  .set-cards-content .row .col:hover img {
+    transform: scale(2) translateX(-25%);
+    left: 50%;
+    position: absolute;
   }
 }
 
