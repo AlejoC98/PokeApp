@@ -41,7 +41,7 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 // Views
-app.get("/", (req, res) => {
+app.get("/Login", (req, res) => {
 
     var response = "../components/modules/loginForm";
 

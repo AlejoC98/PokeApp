@@ -26,6 +26,8 @@ const AutheCheck = async (req, res, next) => {
             }
             break;
         case "/":
+            res.redirect("/Login");
+            break;
         case "/Register":
             if (req.session.user) {
                 res.redirect("/Dashboard");
