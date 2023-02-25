@@ -1,13 +1,14 @@
 // Imports
 import express from 'express';
 const app = express();
-const port = 3000;
 import { AuthLogin, AutheCheck, CreateNewUser, getUserData } from './context/AuthFirebase.js';
 import session from "express-session";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { getPokeCards } from './context/AuthPoke.js';
 import multer from 'multer';
+
+const port = process.env.PORT || 5000;
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -41,7 +42,7 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 // Views
-app.get("/Login", (req, res) => {
+app.get("/", (req, res) => {
 
     var response = "../components/modules/loginForm";
 
