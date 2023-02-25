@@ -331,7 +331,7 @@ main {
 }
 
 .set-table {
-    max-height: 500px;
+    max-height: 80vh;
     overflow-y: scroll;
     scroll-behavior: smooth;
 
@@ -416,11 +416,12 @@ input.num {
 .game-container {
     background-image: url(../img/battle-field.jpg);
     background-repeat: no-repeat;
-    // background-size: 100%;
+    background-size: cover;
+    background-position: center;
 
     .game-info-row {
         padding: 1.5em 0;
-        .col-2, .col-4 {
+        > * {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -475,6 +476,7 @@ input.num {
 
                     img {
                         width: 16vw;
+                        max-width: 100px;
                     }
                 }
     
@@ -617,7 +619,7 @@ input.num {
     }
     .sidebar {
         display: none;
-        z-index: 10000;
+        z-index: 100000;
         position: absolute;
         right: 0;
         background: RGBA(0,0,0,0.33);
@@ -682,9 +684,6 @@ input.num {
     }
 
     .field {
-        .game-container {
-            height: 100vh;
-        }
         .row-cards {
             padding: 0;
         }
