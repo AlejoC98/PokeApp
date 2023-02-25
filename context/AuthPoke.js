@@ -11,7 +11,6 @@ const getPokeCards = async (req) => {
     switch (action) {
         case "all":
             await pokemon.card.where({ pageSize: 250, page: 1 }).then(result => {
-                // console.log(result.data[0].name) // "Blastoise"
                 response = result;
             })
             break;
@@ -47,7 +46,6 @@ const getPokeCards = async (req) => {
             })
             break;
     }
-    // console.log(response);
     return response;
 }
 

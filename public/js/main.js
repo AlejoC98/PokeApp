@@ -90,8 +90,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Open default module
-    if (document.getElementById("side-nav") != null)
+    if (document.getElementById("side-nav") != null) {
         openMenu("game");
+
+        // Add event to toggle menu
+        document.querySelector(".toggle-menu").addEventListener("click", () => {
+            document.querySelector(".sidebar").style.display = "block";
+        });
+
+        // Close toggle menu
+        document.querySelector("#close_menu").addEventListener("click", () => {
+            document.querySelector(".sidebar").style.display = "none";
+        });
+
+    }
     
     document.addEventListener("scroll", (pos) => {
         if (document.querySelectorAll(".breadcrumb").length > 0)
@@ -103,4 +115,5 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.querySelector(".breadcrumb").classList.remove("fixed-top");
                 }
     });
+
 });

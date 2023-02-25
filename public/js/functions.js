@@ -565,6 +565,7 @@ function fadeIn(el, time) {
     tick();
 }
 
-function loadSocialPopUp() {
-    console.log("PErro");
-}
+// ****** THIS WILL BE A FUTHER FEATURE THAT WILL LET USER LOGIN WITH GOOGLE, META AND APPLE ACCOUNTS.
+// function loadSocialPopUp() {
+//     console.log("PErro");
+// }

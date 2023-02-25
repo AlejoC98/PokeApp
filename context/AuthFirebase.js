@@ -64,7 +64,6 @@ const CreateNewUser = async (email, password, fisrtname, lastname, profile_img) 
             upload_img = await getDownloadURL(uploadTask.ref);
             
         } else {
-            console.log("Nossa");
             upload_img = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngall.com%2Fprofile-png%2Fdownload%2F51525&psig=AOvVaw2Cy-FavCzDKct1N41XorEC&ust=1676560375535000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCLiomZ_ol_0CFQAAAAAdAAAAABAE";
         }
 
@@ -74,7 +73,6 @@ const CreateNewUser = async (email, password, fisrtname, lastname, profile_img) 
         }).then(() => {
             response = auth.currentUser;
         }).catch((err) => {
-            console.log(err);
             throw new Error(err);
         });
     

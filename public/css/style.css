@@ -12083,9 +12083,87 @@ input.num {
     transition-property: left, top, opacity;
   }
 }
+.toggle-menu {
+  display: none;
+  cursor: pointer;
+  padding: 2px 5px;
+}
+
+.toggle-menu:hover {
+  border: 0.2em solid #868686;
+  border-radius: 5px;
+}
+
+.close-menu-btn {
+  display: flex;
+  position: absolute;
+  margin: 1em;
+  background: transparent;
+  border: none;
+  color: #db3a34;
+}
+
 @media screen and (max-width: 1200px) {
   .row.login-row {
     margin: 10px 0;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .notification-item {
+    display: none !important;
+  }
+  .sidebar {
+    display: none;
+    z-index: 10000;
+    position: absolute;
+    right: 0;
+    background: RGBA(0, 0, 0, 0.33);
+    width: 100%;
+  }
+  .sidebar .side-nav ul {
+    right: 0;
+    left: unset;
+    height: 100%;
+    border-radius: 0;
+    width: 40%;
+  }
+  .sidebar .side-nav ul li.active {
+    background: #ffffff;
+    border-radius: 20px 0 0 20px;
+    position: relative;
+    margin: 0 10px;
+  }
+  .sidebar .side-nav ul li.active a.text-white {
+    color: #000000 !important;
+    cursor: auto;
+  }
+  .sidebar .side-nav ul li.active a.text-white i {
+    position: relative;
+    left: -10px;
+  }
+  .sidebar .side-nav ul li.active a::before {
+    all: unset;
+  }
+  .sidebar .side-nav ul li.active a::after {
+    all: unset;
+  }
+  .sidebar .side-nav ul li.active::before {
+    all: unset;
+  }
+  .sidebar .side-nav ul li.active::after {
+    all: unset;
+  }
+  .main-container {
+    left: 0;
+  }
+  #username {
+    display: none;
+  }
+  #navbarSupportedContent form input {
+    width: 100%;
+  }
+  .toggle-menu {
+    display: block;
   }
 }
 

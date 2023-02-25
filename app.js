@@ -62,7 +62,6 @@ app.post("/authentication", (req, res) => {
     let response = {};
 
     AuthLogin(email, password).then((result) => {
-        console.log(result.uid);
         req.session.authenticated = true;
         req.session.user = {
             uid: result.uid
@@ -94,7 +93,6 @@ app.post("/Register", upload.single("profile_img"), async (req, res) => {
         res.send({url: "/Dashboard"});
     }).catch((err) => {
         // err.message = err.message.replace(/[^\w\s]/gi, " ");
-        console.log(err);
 
         try {
             err.message = err.message.split("/");
@@ -162,7 +160,6 @@ app.post("/pokeload", async (req, res) => {
 app.get('/Dashboard', async (req, res) => {
     let userData = {};
     await getUserData().then((res) => {
-        console.log(res);
         userData = {
             "firstname" : res.displayName.split(" ")[0],
             "lastname" : res.displayName.split(" ")[1],
