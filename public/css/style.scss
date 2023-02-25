@@ -416,7 +416,7 @@ input.num {
 .game-container {
     background-image: url(../img/battle-field.jpg);
     background-repeat: no-repeat;
-    background-size: 100%;
+    // background-size: 100%;
 
     .game-info-row {
         padding: 1.5em 0;
@@ -439,9 +439,11 @@ input.num {
             z-index: 10000;
             cursor: pointer;
             background-color: transparent;
-            width: 110px;
-            height: 150px;
-            // border: 1px solid #f1f1f1;
+            width: 16vw;
+            height: 21vw;
+            max-width: 110px;
+            max-height: 150px;
+            margin: 0.5em;
             transition: 1s all;
             perspective: 1000px; /* Remove this if you don't want the 3D effect */
     
@@ -470,6 +472,10 @@ input.num {
                 .flip-card-front {
                     // background-color: #bbb;
                     color: black;
+
+                    img {
+                        width: 16vw;
+                    }
                 }
     
                 /* Style the back side */
@@ -624,21 +630,21 @@ input.num {
                 border-radius: 0;
                 width: 40%;
 
-                li.active {
-                    background: #ffffff;
-                    border-radius: 20px 0 0 20px;
-                    position: relative;
-                    margin: 0 10px;
-                    a.text-white {
-                        color: #000000 !important;
-                        cursor:auto;
+                // li.active {
+                //     background: #ffffff;
+                //     border-radius: 20px 0 0 20px;
+                //     position: relative;
+                //     margin: 0 10px;
+                //     a.text-white {
+                //         color: #000000 !important;
+                //         cursor:auto;
         
-                        i {
-                            position: relative;
-                            left: -10px;
-                        }
-                    }
-                }
+                //         i {
+                //             position: relative;
+                //             left: -10px;
+                //         }
+                //     }
+                // }
         
                 li.active a::before {
                     all: unset;
@@ -673,5 +679,14 @@ input.num {
     }
     .toggle-menu {
         display: block;
+    }
+
+    .field {
+        .game-container {
+            height: 100vh;
+        }
+        .row-cards {
+            padding: 0;
+        }
     }
 }
