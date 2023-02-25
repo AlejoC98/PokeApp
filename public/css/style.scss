@@ -688,7 +688,16 @@ input.num {
         margin-top: 5em;
     
         .row {
-    
+            
+            .col {
+                img {
+                    width: 30vw;
+                    height: 35vw;
+                    max-width: 150px;
+                    max-height: 200px;
+                }
+            }
+
             .col:hover img {
                 transform: scale(2) translateX(-25%);
                 left: 50%;
